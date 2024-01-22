@@ -6,23 +6,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/843fcc9fef.js" crossorigin="anonymous"></script>
-    <title>Portfolio</title>
+    <script src="three.r134.min.js"></script>
+    <script src="vanta.net.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.topology.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+      <script>
+        window.addEventListener('DOMContentLoaded',() => {
+            VANTA.NET({
+      el: "#services",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00
+    })
+    VANTA.GLOBE({
+  el: "#header",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00
+})
+VANTA.TOPOLOGY({
+  el: "#about",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00
+})
+VANTA.DOTS({
+  el: "#contact",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00
+})
+
+        })
+    </script>
+       
+    <title>Welcome to RKR_Webpage</title>
     <script>
 
         function hello() {
-            let h1 = document.querySelector('h1');
-            if (h1.innerHTML === 'Hello !') {
-                h1.innerHTML = "Hello, India !";
-            }
-            else {
-                h1.innerHTML = 'Hello !';
-            }
+  
+            alert('This Page is Under maintainace !');
         }
     </script>
 </head>
 
 <body>
     <div id="header">
+
         <div class="container">
             <nav>
                 <img src="images/logo.png" class="logo">
@@ -36,8 +88,10 @@
                 <i class="fa-solid fa-bars" onclick="openmenu()"></i>
             </nav>
             <div class="header-text">
-                <p>Python Webapplication Developer !</p>
+                <span id="name"></span>
                 <h1>I'am <span>Raju Kumar</span><br>from India.</h1>
+                 <!-- Element to contain animated typing -->
+                <span id="element"></span>
             </div>
         </div>
     </div>
@@ -96,21 +150,21 @@
                         <h2>Web Design</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua</p>
-                        <a href="#">learn more.</a>
+                        <a href="#" onclick="hello()">learn more.</a>
                     </div>
                     <div>
                         <i class="fa-solid fa-crop"></i>
                         <h2>UI/UX Design</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua</p>
-                        <a href="#">learn more.</a>
+                        <a href="#" onclick="hello()">learn more.</a>
                     </div>
                     <div>
                         <i class="fa-brands fa-app-store-ios"></i>
                         <h2>App Design</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua</p>
-                        <a href="#">learn more.</a>
+                        <a href="#" onclick="hello()">learn more.</a>
                     </div>
 
 
@@ -160,8 +214,8 @@
                 <div class="row">
                     <div class="contact-left">
                         <h1 class="sub-title">Contact Me</h1>
-                        <p><i class="fa-solid fa-paper-plane"></i> contact@example.com</p>
-                        <p><i class="fa-solid fa-phone-flip"></i> 0123456789</p>
+                        <p href="mailto:rajukumarrkr@aol.com"><i class="fa-solid fa-paper-plane"></i> contact@example.com</p>
+                        <p><i href="tel:123-456-7890" class="fa-solid fa-phone-flip"></i> 0123456789</p>
                         <div class="social-icons">
                             <a href="#"><i class="fa-brands fa-facebook"></i></a>
                             <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
@@ -181,9 +235,9 @@
                     </div>
                 </div>
             </div>
-            <div class="copyright">
-                <p>Copyright &copy;2024 All rights reserved.Made with<i class="fa-solid fa-heart"></i>by Rkr !</p>
-            </div>
+            <footer class="copyright">
+                <p>Copyright &copy;2024 All right reserved.Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
+            </footer>
         </div>
         <script>
             var tablinks = document.getElementsByClassName('tab-links');
@@ -212,6 +266,21 @@
                 
             }
         </script>
-</body>
+        <!-- Load library from the CDN -->
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
+  <!-- Setup and start animation! -->
+  <script>
+    var typed = new Typed('#element', {
+      strings: ['Network Systems Administrator','Network Security Analyst','Server Administrator', '&amp; Python WebApps Developer !'],
+      typeSpeed: 50,
+    });
+  </script>
+    <script>
+        var typed = new Typed('#name', {
+          strings: ['Hi, There...'],
+          typeSpeed: 50,
+        });
+      </script>
+</body>
 </html>

@@ -6,49 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/843fcc9fef.js" crossorigin="anonymous"></script>
-    <script src="three.r134.min.js"></script>
-    <script src="vanta.net.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.topology.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
-      <script>
+    <title>Welcome to RKR's WebPage</title>
+    <script>
+
+        function hello() {
+            alert('This page is down for maintenance.' + "\n" + "We are working to get it back up and running as soon as possible !");
+        }
+        function unauth(){
+            alert('Please click on e-mail to download CV.');
+        }
+    </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+    <script>
         window.addEventListener('DOMContentLoaded',() => {
-            VANTA.NET({
-      el: "#services",
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00
-    })
-    VANTA.GLOBE({
-  el: "#header",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00
-})
-VANTA.TOPOLOGY({
-  el: "#about",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00
-})
-VANTA.DOTS({
+            VANTA.DOTS({
   el: "#contact",
   mouseControls: true,
   touchControls: true,
@@ -58,23 +30,12 @@ VANTA.DOTS({
   scale: 1.00,
   scaleMobile: 1.00
 })
-
         })
-    </script>
-       
-    <title>Welcome to RKR_Webpage</title>
-    <script>
-
-        function hello() {
-  
-            alert('This Page is Under maintainace !');
-        }
     </script>
 </head>
 
 <body>
     <div id="header">
-
         <div class="container">
             <nav>
                 <img src="images/logo.png" class="logo">
@@ -83,15 +44,15 @@ VANTA.DOTS({
                     <li><a href="#about">About</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    <li><a href="https://rajukumarrkr.blogspot.com/" target="_blank">weblog</a></li>
                     <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
                 </ul>
                 <i class="fa-solid fa-bars" onclick="openmenu()"></i>
             </nav>
             <div class="header-text">
-                <span id="name"></span>
-                <h1>I'am <span>Raju Kumar</span><br>from India.</h1>
-                 <!-- Element to contain animated typing -->
-                <span id="element"></span>
+                <p>Hi, There !</p>
+                <h1>My name is <span>Raju Kumar</span><br>from India.</h1>
+                <span id="profession"></span>
             </div>
         </div>
     </div>
@@ -100,15 +61,15 @@ VANTA.DOTS({
         <div class="container">
             <div class="row">
                 <div class="about-col1">
-                    <img src="images/background.png" alt="Rkr">
+                    <img src="images/bgim1.png" alt="Rkr">
                 </div>
                 <div class="about-col2">
                     <h1 class="sub-title">About Me</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>As a highly skilled network systems/security engineer and server administrator, I have a proven track record of ensuring the security and reliability of complex network infrastructures. With extensive experience in designing, implementing, and maintaining secure networks, I possess a deep understanding of the latest security technologies, tools, and best practices.
+
+                        My expertise includes managing server hardware, operating systems, virtualization, and storage systems, as well as implementing security measures such as firewalls, intrusion detection/prevention systems, and access control policies. I am also well-versed in disaster recovery and business continuity planning, and have successfully led teams in mitigating and recovering from various security incidents.
+                        
+                        My technical acumen is complemented by excellent communication and collaboration skills, allowing me to effectively work with cross-functional teams and stakeholders. I am passionate about staying up-to-date with emerging trends and technologies in the field, and am committed to continuously improving the security posture of the organizations I work with.</p>
                     <div class="tab-titles">
                         <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
                         <p class="tab-links" onclick="opentab('experience')">Experience</p>
@@ -116,23 +77,25 @@ VANTA.DOTS({
                     </div>
                     <div class="tab-contents active-tab" id="skills">
                         <ul>
-                            <li><span>UI/UX</span><br>Designer Web/app Interface.</li>
-                            <li><span>Web Development</span><br>Web Application Development</li>
-                            <li><span>App Development</span><br>Android/iOS Application Development.</li>
+                            <li><span>Network Design</span><br>Secure industrial Network Designing & Troubleshooting of complex.</li>
+                            <li><span>Web Development</span><br>Python WebApps Development using Frameworks like Django and Flask.</li>
+                            <li><span>Automation</span><br>Automation and machine learning with Python.</li>
                         </ul>
                     </div>
                     <div class="tab-contents" id="experience">
                         <ul>
-                            <li><span>2000 - Present</span><br>Designing Web/app Interface.</li>
-                            <li><span>2001 - 2002</span><br>Web Application Development</li>
-                            <li><span>2003 - 2004</span><br>Android/iOS Application Development.</li>
+                            <li><span>2018 - Present</span><br>Implementation/Designing & Troubleshooting complex network infrastructures.</li>
+                            <li><span>2019 - Present</span><br>Automation for Network Systems and Troubleshooting.</li>
+                            <li><span>2021 - Present</span><br>Web Application Development using Python.</li>
+                            
                         </ul>
                     </div>
                     <div class="tab-contents" id="education">
                         <ul>
-                            <li><span>2001</span><br>Designing Web/app Interface.</li>
-                            <li><span>2002</span><br>Web Application Development</li>
-                            <li><span>2004</span><br>Android/iOS Application Development.</li>
+                            <li><span>2018</span><br>Cisco Certified Network Associate and JCHNE+cloud v1.</li>
+                            <li><span>2019</span><br>Python machine learning & Deep Learnig from IIT, Roorkee.</li>
+                            <li><span>2021</span><br>Full stack Web Development and Web Programming using Python.</li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -148,23 +111,22 @@ VANTA.DOTS({
                     <div>
                         <i class="fa-solid fa-code"></i>
                         <h2>Web Design</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua</p>
-                        <a href="#" onclick="hello()">learn more.</a>
+                        <p>The creation of websites and pages to reflect a company's brand and information and ensure a user-friendly experience. Appearance and design are incorporated as vital elements whether you're designing a website or maintaining content on a web page.</p>
+                        <a href="#" onclick="hello()">more.</a>
                     </div>
                     <div>
-                        <i class="fa-solid fa-crop"></i>
-                        <h2>UI/UX Design</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua</p>
-                        <a href="#" onclick="hello()">learn more.</a>
+                        
+                        <i class="fa-solid fa-network-wired"></i>
+                        <h2>Network Design & Configuration</h2>
+                        <p>A logical map of the network to be implemented, the number of network devices, the type of network devices, the location of network devices, the IP addressing structure, and the network security architecture are all typical components of network design and Configurations.</p>
+                        <a href="#" onclick="hello()">more.</a>
                     </div>
                     <div>
-                        <i class="fa-brands fa-app-store-ios"></i>
-                        <h2>App Design</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua</p>
-                        <a href="#" onclick="hello()">learn more.</a>
+                        <!--<i class="fa-brands fa-app-store-ios"></i>-->
+                        <i><img class="technical" src="images/technical-support.png" width="70px" alt="Technical_support"></i>
+                        <h2>Technical Support</h2>
+                        <p>Maintenance and troubleshooting of Computer Network Hardware,specialized in areas such as Information Systems, Network Management (firewalls & L2-3 devices)and System Administration.</p>
+                        <a href="#" onclick="hello()">more.</a>
                     </div>
 
 
@@ -178,29 +140,26 @@ VANTA.DOTS({
                 <h1 class="sub-title">My Work</h1>
                 <div class="work-list">
                     <div class="work">
-                        <img src="images/background.png" alt="work">
+                        <img src="images/Web_work.jpg" alt="work">
                         <div class="layer">
-                            <h3>Social Media Apps</h3>
-                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <h3>Web Applications</h3>
+                            <p>Web Programming using HTML, CSS, JavaScript,React, Postgresql, SQLite3, Flask & Django.</p>
                                 <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
                     <div class="work">
-                        <img src="images/background.png" alt="work">
+                        <img src="images/fix-network.jpg" alt="work">
                         <div class="layer">
-                            <h3>Music Apps</h3>
-                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <h3>Network Device Configurations</h3>
+                            <p>Configurations of Next Generation firewalls, Cisco & Brocade switches(L2,L3) and Wireless controls. </p>
                                 <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
                     <div class="work">
-                        <img src="images/background.png" alt="work">
+                        <img src="images/automation.jpg" alt="work">
                         <div class="layer">
-                            <h3>Online Shopping Apps</h3>
-                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <h3>Automation for Computer Network</h3>
+                            <p>Heavy Tasks automation to perform network activity using python libraries.</p>
                                 <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
@@ -214,32 +173,34 @@ VANTA.DOTS({
                 <div class="row">
                     <div class="contact-left">
                         <h1 class="sub-title">Contact Me</h1>
-                        <p href="mailto:rajukumarrkr@aol.com"><i class="fa-solid fa-paper-plane"></i> contact@example.com</p>
-                        <p><i href="tel:123-456-7890" class="fa-solid fa-phone-flip"></i> 0123456789</p>
+                        <p><i class="fa-solid fa-paper-plane"></i><a href="mailto:rajukumarrathava@protonmail.ch" id="mail"> rajukumarrathava@protonmail.ch</a></p>
+                        <!--<p><i class="fa-solid fa-phone-flip"></i> </p>-->
                         <div class="social-icons">
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.facebook.com/rajukumar.rathawa.rkr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://twitter.com/rajukumar_rkr" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.instagram.com/rajukumar_rkr/" target="_blank"><i class="fa-brands fa-instagram"></i>
+                            <a href="https://www.threads.net/@rajukumar_rkr" target="_blank"><i class="fa-brands fa-threads"></i></a>
                         </div>
-                        <a href="images/List1.pdf" download="images" class="btn btn2">Download CV</a>
+                        <a href="#" download="images" class="btn btn2" onclick="unauth()">Download CV</a>
 
                     </div>
                     <div class="contact-right">
-                        <form action="">
-                            <input type="text" name="name"  placeholder="Enter Your Name" required>
-                            <input type="email" name="email" placeholder="Email" required>
-                            <textarea name="message" id="" cols="30" rows="10" placeholder="Yor Message"></textarea>
+                        <form name="submit-to-google-sheet">
+                            <input type="text" name="Name"  placeholder="Enter Your Name" required>
+                            <input type="email" name="Email" placeholder="Email" required>
+                            <textarea name="Message" id="" cols="30" rows="10" placeholder="Enter Your Message"></textarea>
                             <button type="submit" class="btn btn2">Submit</button>
                         </form>
+                        <span id="msg"></span>
                     </div>
                 </div>
             </div>
-            <footer class="copyright">
-                <p>Copyright &copy;2024 All right reserved.Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
-            </footer>
         </div>
+        <footer class="copyright">
+            <p>Copyright &copy;2024 All rights reserved. Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
+        </footer>
         <script>
+
             var tablinks = document.getElementsByClassName('tab-links');
             var tabcontents = document.getElementsByClassName('tab-contents');
 
@@ -256,31 +217,46 @@ VANTA.DOTS({
             }
         </script>
         <script>
-            var sidemenu = document.getElementById('sidemenu');
+            var sidemenu = document.getElementById("sidemenu");
+
             function openmenu(){
                 sidemenu.style.right = '0';
-
             }
             function closemenu(){
                 sidemenu.style.right = '-200px';
-                
             }
         </script>
-        <!-- Load library from the CDN -->
+        <script>
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzn3r5y3h2XpK8lCDbQae1oijRBR6KoR9_NOPVBDPQkN2De1h3Dzfcf5PUXFDjgBp0x/exec'
+            const form = document.forms['submit-to-google-sheet']
+            const msg = document.getElementById('msg')
+          
+            form.addEventListener('submit', e => {
+              e.preventDefault()
+              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    msg.innerHTML='Message Sent Successfully !'
+                    setTimeout(function(){
+                        msg.innerHTML=''
+                    },5000)
+                    form.reset()
+                })
+                .catch(error => console.error('Error!', error.message))
+            })
+          </script>
+           <!-- Load library from the CDN -->
   <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
   <!-- Setup and start animation! -->
-  <script>
-    var typed = new Typed('#element', {
-      strings: ['Network Systems Administrator','Network Security Analyst','Server Administrator', '&amp; Python WebApps Developer !'],
-      typeSpeed: 50,
-    });
-  </script>
     <script>
-        var typed = new Typed('#name', {
-          strings: ['Hi, There...'],
-          typeSpeed: 50,
-        });
+        var profession = {
+            strings: ["I'm a Network Systems Administrator","A Network Security Engineer","A Server Administrator", "&amp; Python WebApps Developer !"],
+            typeSpeed: 40,
+            loop:true
+        }
+        var typed = new Typed('#profession',profession);
+        
       </script>
 </body>
+
 </html>

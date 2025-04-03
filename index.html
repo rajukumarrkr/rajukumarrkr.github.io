@@ -8,7 +8,6 @@
     <script src="https://kit.fontawesome.com/843fcc9fef.js" crossorigin="anonymous"></script>
     <title>Welcome to RKR's WebPage</title>
     <script>
-
         function hello() {
             alert('This page is down for maintenance.' + "\n" + "We are working to get it back up and running as soon as possible !");
         }
@@ -16,29 +15,98 @@
             alert('Please click on e-mail to download CV.');
         }
     </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
     <script>
-        window.addEventListener('DOMContentLoaded',() => {
+        window.addEventListener('DOMContentLoaded', () => {
             VANTA.DOTS({
-  el: "#contact",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00
-})
+                el: "#contact",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00
+            })
         })
     </script>
+    <style>
+        body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+header {
+    background: linear-gradient(to right, #1f1f1f, #8e8e8e);
+    color: #fff;
+    padding: 50px 0;
+    text-align: center;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #4CAF50;
+}
+
+section {
+    padding: 60px 0;
+}
+
+.service-card {
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.contact-left, .contact-right {
+    flex: 1;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+    </style>
 </head>
 
 <body>
-    <div id="header">
+    <header id="header">
         <div class="container">
             <nav>
-                <img src="images/logo.png" class="logo">
+                <img src="images/logo.png" class="logo" alt="Logo">
                 <ul id="sidemenu">
                     <li><a href="#header">Home</a></li>
                     <li><a href="#about">About</a></li>
@@ -55,21 +123,18 @@
                 <span id="profession"></span>
             </div>
         </div>
-    </div>
-    <!----------------about----------->
-    <div id="about">
+    </header>
+
+    <section id="about">
         <div class="container">
             <div class="row">
                 <div class="about-col1">
-                    <img src="images/bgim1.png" alt="Rkr">
+                    <img src="images/bgim1.png" alt="RKR">
                 </div>
                 <div class="about-col2">
                     <h1 class="sub-title">About Me</h1>
-                    <p>As a highly skilled network systems/security engineer and server administrator, I have a proven track record of ensuring the security and reliability of complex network infrastructures. With extensive experience in designing, implementing, and maintaining secure networks, I possess a deep understanding of the latest security technologies, tools, and best practices.
+                    <p>As a highly skilled network systems/security engineer and server administrator, I have a proven track record of ensuring the security and reliability of complex network infrastructures...</p>
 
-                        My expertise includes managing server hardware, operating systems, virtualization, and storage systems, as well as implementing security measures such as firewalls, intrusion detection/prevention systems, and access control policies. I am also well-versed in disaster recovery and business continuity planning, and have successfully led teams in mitigating and recovering from various security incidents.
-                        
-                        My technical acumen is complemented by excellent communication and collaboration skills, allowing me to effectively work with cross-functional teams and stakeholders. I am passionate about staying up-to-date with emerging trends and technologies in the field, and am committed to continuously improving the security posture of the organizations I work with.</p>
                     <div class="tab-titles">
                         <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
                         <p class="tab-links" onclick="opentab('experience')">Experience</p>
@@ -77,186 +142,128 @@
                     </div>
                     <div class="tab-contents active-tab" id="skills">
                         <ul>
-                            <li><span>Network Design</span><br>Secure industrial Network Designing & Troubleshooting of complex network infrastructure.</li>
-                            <li><span>Web Development</span><br>Python WebApps Development using Frameworks like Django and Flask.</li>
+                            <li><span>Network Design</span><br>Secure industrial network design & troubleshooting.</li>
+                            <li><span>Web Development</span><br>Python WebApps using Django and Flask.</li>
                             <li><span>Automation</span><br>Automation and machine learning with Python.</li>
                         </ul>
                     </div>
                     <div class="tab-contents" id="experience">
                         <ul>
-                            <li><span>2018 - Present</span><br>Implementation/Designing & Troubleshooting complex network infrastructures.</li>
-                            <li><span>2019 - Present</span><br>Automation for Network Systems and Troubleshooting.</li>
-                            <li><span>2021 - Present</span><br>Web Application Development using Python.</li>
-                            
+                            <li><span>2018 - Present</span><br>Network infrastructure design and troubleshooting.</li>
+                            <li><span>2019 - Present</span><br>Automation for network systems.</li>
+                            <li><span>2021 - Present</span><br>Web application development using Python.</li>
                         </ul>
                     </div>
                     <div class="tab-contents" id="education">
                         <ul>
-                            <li><span>2018</span><br>Cisco Certified Network Associate and JCHNE+cloud v1.</li>
-                            <li><span>2019</span><br>Python machine learning & Deep Learning from IIT, Roorkee.</li>
-                            <li><span>2021</span><br>Full stack Web Development and Web Programming using Python.</li>
-                            
+                            <li><span>2018</span><br>Cisco Certified Network Associate.</li>
+                            <li><span>2019</span><br>Machine learning & Deep Learning from IIT, Roorkee.</li>
+                            <li><span>2021</span><br>Full stack Web Development and Web Programming.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-
-        <!------------------servies------------->
-        <div id="services">
-            <div class="container">
-                <h1 class="sub-title">My Services</h1>
-                <div class="services-list">
-                    <div>
-                        <i class="fa-solid fa-code"></i>
-                        <h2>Web Design</h2>
-                        <p>Creation of websites and pages to reflect a company's brand and information and ensure a user-friendly experience. Whether I am designing a website or maintaining content on a web page, appearance and design are included as important elements.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-                    <div>
-                        
-                        <i class="fa-solid fa-network-wired"></i>
-                        <h2>Network Architecture Design</h2>
-                        <p>A logical map of the network to be implemented, the number of network devices, the type of network devices, the location of network devices, the IP addressing structure, and the network security architecture are all typical components of network design and Configurations.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-                    <div>
-                        <!--<i class="fa-brands fa-app-store-ios"></i>-->
-                        <i><img class="technical" src="images/technical-support.png" width="70px" alt="Technical_support"></i>
-                        <h2>Technical Support</h2>
-                        <p>Maintenance and troubleshooting of Computer Network Hardware,specialized in areas such as Information Systems, Network Management (firewalls & L2-3 devices)and System Administration.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-
-
+    <section id="services">
+        <div class="container">
+            <h1 class="sub-title">My Services</h1>
+            <div class="services-list">
+                <div class="service-card">
+                    <i class="fa-solid fa-code"></i>
+                    <h2>Web Design</h2>
+                    <p>Creation of user-friendly, responsive websites that align with your brand identity.</p>
+                    <a href="#" onclick="hello()">more.</a>
                 </div>
-
-            </div>
-        </div>
-        <!------------------------Portfolio------------------->
-        <div id="portfolio">
-            <div class="container">
-                <h1 class="sub-title">My Work</h1>
-                <div class="work-list">
-                    <div class="work">
-                        <img src="images/Web_work.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Web Applications</h3>
-                            <p>Web Programming using HTML, CSS, JavaScript,React, Postgresql, SQLite3, Flask & Django.</p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                    <div class="work">
-                        <img src="images/fix-network.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Network Device Configurations</h3>
-                            <p>Configurations of Next Generation firewalls like (Paloalto, FortiGate, Sophos and Checkpoint), Routers,Switches,L2-L3 devices and Wireless controllers. </p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                    <div class="work">
-                        <img src="images/automation.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Automation for Computer Network</h3>
-                            <p>Heavy Tasks automation to perform network activity using python libraries.</p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
+                <div class="service-card">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <h2>Network Architecture Design</h2>
+                    <p>Designing secure, scalable, and efficient network architectures for enterprises.</p>
+                    <a href="#" onclick="hello()">more.</a>
                 </div>
-                <a href="#" class="btn">See more</a>
-            </div>
-        </div>
-        <!-- ----------------Contact-------------------- -->
-        <div id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="contact-left">
-                        <h1 class="sub-title">Contact Info :</h1>
-                        <p><i class="fa-solid fa-paper-plane"></i><a href="mailto:mail@rajukumarrkr.in" id="mail"> mail@rajukumarrkr.in</a></p>
-                        <!--<p><i class="fa-solid fa-phone-flip"></i> </p>-->
-                        <div class="social-icons">
-                            <a href="https://www.facebook.com/rajukumar.rathawa.rkr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="https://twitter.com/rajukumar_rkr" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                            <a href="https://www.instagram.com/rajukumar_rkr/" target="_blank"><i class="fa-brands fa-instagram"></i>
-                            <a href="https://www.threads.net/@rajukumar_rkr" target="_blank"><i class="fa-brands fa-threads"></i></a>
-                        </div>
-                        <!-- <a href="#" download="images" class="btn btn2" onclick="unauth()">Download CV</a> -->
-
-                    </div>
-                    <div class="contact-right">
-                        <form name="submit-to-google-sheet">
-                            <input type="text" name="Name"  placeholder="Enter Your Name" required>
-                            <input type="email" name="Email" placeholder="Email" required>
-                            <textarea name="Message" id="" cols="30" rows="10" placeholder="Enter Your Message"></textarea>
-                            <button type="submit" class="btn btn2">Submit</button>
-                        </form>
-                        <span id="msg"></span>
-                    </div>
+                <div class="service-card">
+                    <i><img class="technical" src="images/technical-support.png" width="70px" alt="Technical support"></i>
+                    <h2>Technical Support</h2>
+                    <p>Providing maintenance and troubleshooting services for complex network hardware.</p>
+                    <a href="#" onclick="hello()">more.</a>
                 </div>
             </div>
         </div>
-        <footer class="copyright">
-            <p>Copyright &copy;2025 All rights reserved. Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
-        </footer>
-        <script>
+    </section>
 
-            var tablinks = document.getElementsByClassName('tab-links');
-            var tabcontents = document.getElementsByClassName('tab-contents');
+    <section id="portfolio">
+        <div class="container">
+            <h1 class="sub-title">My Work</h1>
+            <div class="work-list">
+                <div class="work">
+                    <img src="images/Web_work.jpg" alt="Web Applications">
+                    <div class="layer">
+                        <h3>Web Applications</h3>
+                        <p>Building web apps using HTML, CSS, JavaScript, React, Flask, and Django.</p>
+                        <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                </div>
+                <div class="work">
+                    <img src="images/fix-network.jpg" alt="Network Configurations">
+                    <div class="layer">
+                        <h3>Network Device Configurations</h3>
+                        <p>Configuring Next-gen firewalls, routers, and switches for robust network infrastructure.</p>
+                        <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                </div>
+                <div class="work">
+                    <img src="images/automation.jpg" alt="Network Automation">
+                    <div class="layer">
+                        <h3>Network Automation</h3>
+                        <p>Automating complex network tasks using Python for efficiency and reliability.</p>
+                        <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn">See more</a>
+        </div>
+    </section>
 
-            function opentab(tabname) {
-                for (tablink of tablinks) {
-                    tablink.classList.remove('active-link');
-                }
-                for (tabcontent of tabcontents) {
-                    tabcontent.classList.remove('active-tab')
-                }
-                event.currentTarget.classList.add("active-link")
-                document.getElementById(tabname).classList.add("active-tab");
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="contact-left">
+                    <h1 class="sub-title">Contact Info :</h1>
+                    <p><i class="fa-solid fa-paper-plane"></i><a href="mailto:mail@rajukumarrkr.in" id="mail"> mail@rajukumarrkr.in</a></p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/rajukumar.rathawa.rkr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://twitter.com/rajukumar_rkr" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.instagram.com/rajukumar_rkr/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.threads.net/@rajukumar_rkr" target="_blank"><i class="fa-brands fa-threads"></i></a>
+                    </div>
+                </div>
+                <div class="contact-right">
+                    <form name="submit-to-google-sheet">
+                        <input type="text" name="Name" placeholder="Enter Your Name" required>
+                        <input type="email" name="Email" placeholder="Email" required>
+                        <textarea name="Message" id="" cols="30" rows="10" placeholder="Enter Your Message"></textarea>
+                        <button type="submit" class="btn btn2">Submit</button>
+                    </form>
+                    <span id="msg"></span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            }
-        </script>
-        <script>
-            var sidemenu = document.getElementById("sidemenu");
+    <footer class="copyright">
+        <p>Copyright &copy;2025 All rights reserved. Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
+    </footer>
 
-            function openmenu(){
-                sidemenu.style.right = '0';
-            }
-            function closemenu(){
-                sidemenu.style.right = '-200px';
-            }
-        </script>
-        <script>
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzn3r5y3h2XpK8lCDbQae1oijRBR6KoR9_NOPVBDPQkN2De1h3Dzfcf5PUXFDjgBp0x/exec'
-            const form = document.forms['submit-to-google-sheet']
-            const msg = document.getElementById('msg')
-          
-            form.addEventListener('submit', e => {
-              e.preventDefault()
-              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    msg.innerHTML='Message Sent Successfully !'
-                    setTimeout(function(){
-                        msg.innerHTML=''
-                    },5000)
-                    form.reset()
-                })
-                .catch(error => console.error('Error!', error.message))
-            })
-          </script>
-           <!-- Load library from the CDN -->
-  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-
-  <!-- Setup and start animation! -->
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script>
         var profession = {
             strings: ["I'm a Cyber Security Engineer","A Network Systems Administrator","A Server Administrator", "&amp; Python WebApps Developer !"],
             typeSpeed: 40,
             loop:true
         }
-        var typed = new Typed('#profession',profession);
-        
-      </script>
+        var typed = new Typed('#profession', profession);
+    </script>
 </body>
 
 </html>

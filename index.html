@@ -32,7 +32,8 @@
         })
     </script>
     <style>
-        body {
+        /* Global Styles */
+body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
@@ -41,7 +42,8 @@
 }
 
 .container {
-    width: 80%;
+    width: 90%;
+    max-width: 1200px;
     margin: auto;
 }
 
@@ -54,7 +56,8 @@ header {
 
 header nav ul {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 20px;
     padding: 0;
 }
 
@@ -69,8 +72,54 @@ header nav ul li a:hover {
     color: #4CAF50;
 }
 
-section {
+header .logo {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+header .header-text h1 {
+    font-size: 2.5rem;
+    line-height: 1.5;
+}
+
+header .header-text p {
+    font-size: 1.2rem;
+}
+
+/* About Section */
+#about {
     padding: 60px 0;
+}
+
+.about-col1 img {
+    max-width: 100%;
+}
+
+.about-col2 {
+    padding-left: 20px;
+}
+
+.tab-titles p {
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px 0;
+    display: inline-block;
+}
+
+.tab-titles .active-link {
+    color: #4CAF50;
+}
+
+/* Services Section */
+#services {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.services-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 .service-card {
@@ -85,18 +134,118 @@ section {
     transform: translateY(-10px);
 }
 
-.contact-left, .contact-right {
+/* Portfolio Section */
+#portfolio {
+    padding: 60px 0;
+}
+
+.work-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.work {
+    position: relative;
+    overflow: hidden;
+}
+
+.work img {
+    width: 100%;
+    height: auto;
+}
+
+.layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.layer h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Contact Section */
+#contact {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.contact-left {
     flex: 1;
 }
 
+.contact-right {
+    flex: 1;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Footer */
 footer {
     background-color: #333;
     color: white;
     padding: 20px 0;
     text-align: center;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .services-list {
+        flex-direction: column;
+    }
+
+    .work-list {
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .about-col2 {
+        padding-left: 0;
+    }
+
+    .about-col1 {
+        text-align: center;
+    }
+
+    header .header-text h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header .header-text h1 {
+        font-size: 1.5rem;
+    }
+
+    .service-card {
+        padding: 15px;
+    }
+
+    .work-list {
+        gap: 10px;
+    }
 }
 
     </style>

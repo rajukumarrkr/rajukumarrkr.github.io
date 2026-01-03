@@ -1,262 +1,395 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>RKR | Cyber Security & Network Engineer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    
     <script src="https://kit.fontawesome.com/843fcc9fef.js" crossorigin="anonymous"></script>
-    <title>Welcome to RKR's WebPage</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: '#00f3ff', // Cyan accent
+                        dark: '#0f0f0f',
+                        card: '#1a1a1a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-        function hello() {
-            alert('This page is down for maintenance.' + "\n" + "We are working to get it back up and running as soon as possible !");
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f0f; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+        
+        .glass-nav {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(10px);
         }
-        function unauth(){
-            alert('Please click on e-mail to download CV.');
-        }
-    </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded',() => {
-            VANTA.DOTS({
-  el: "#contact",
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00
-})
-        })
-    </script>
+    </style>
 </head>
 
-<body>
-    <div id="header">
-        <div class="container">
-            <nav>
-                <img src="images/logo.png" class="logo">
-                <ul id="sidemenu">
-                    <li><a href="#header">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="https://rajukumarrkr.blogspot.com/" target="_blank">weblog</a></li>
-                    <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
-                </ul>
-                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
-            </nav>
-            <div class="header-text">
-                <p>Hi, There !</p>
-                <h1>My name is <span>Raju Kumar</span><br>from India.</h1>
+<body class="bg-dark text-gray-200 font-sans antialiased overflow-x-hidden">
+
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 font-heading font-bold text-2xl tracking-wider text-white">
+                    <span class="text-cyber">R</span>KR<span class="text-cyber">.</span>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#about" class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="#services" class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Services</a>
+                        <a href="#portfolio" class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Portfolio</a>
+                        <a href="#contact" class="hover:text-cyber transition-colors px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                        <a href="https://rajukumarrkr.blogspot.com/" target="_blank" class="bg-cyber text-dark hover:bg-white transition-colors px-4 py-2 rounded-md text-sm font-bold">Blog</a>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:hidden hidden bg-dark border-t border-gray-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" onclick="toggleMenu()" class="block px-3 py-2 rounded-md text-base font-medium hover:text-cyber">Home</a>
+                <a href="#about" onclick="toggleMenu()" class="block px-3 py-2 rounded-md text-base font-medium hover:text-cyber">About</a>
+                <a href="#services" onclick="toggleMenu()" class="block px-3 py-2 rounded-md text-base font-medium hover:text-cyber">Services</a>
+                <a href="#contact" onclick="toggleMenu()" class="block px-3 py-2 rounded-md text-base font-medium hover:text-cyber">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home" class="relative w-full h-screen flex items-center justify-center">
+        <div id="vanta-bg" class="absolute inset-0 z-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent z-10"></div>
+
+        <div class="relative z-20 text-center px-4">
+            <p class="text-cyber text-lg mb-2 tracking-widest uppercase font-semibold">Hi, There!</p>
+            <h1 class="text-5xl md:text-7xl font-heading font-bold text-white mb-4">
+                I'm <span class="text-cyber">Raju Kumar</span>
+            </h1>
+            <div class="text-xl md:text-2xl text-gray-400 h-10">
                 <span id="profession"></span>
+            </div>
+            <div class="mt-8">
+                <a href="#contact" class="border-2 border-cyber text-cyber px-8 py-3 rounded-full font-bold hover:bg-cyber hover:text-dark transition-all duration-300">Let's Talk</a>
             </div>
         </div>
     </div>
-    <!----------------about----------->
-    <div id="about">
-        <div class="container">
-            <div class="row">
-                <div class="about-col1">
-                    <img src="images/bgim1.png" alt="Rkr">
-                </div>
-                <div class="about-col2">
-                    <h1 class="sub-title">About Me</h1>
-                    <p>As a highly skilled network systems/security engineer and server administrator, I have a proven track record of ensuring the security and reliability of complex network infrastructures. With extensive experience in designing, implementing, and maintaining secure networks, I possess a deep understanding of the latest security technologies, tools, and best practices.
 
-                        My expertise includes managing server hardware, operating systems, virtualization, and storage systems, as well as implementing security measures such as firewalls, intrusion detection/prevention systems, and access control policies. I am also well-versed in disaster recovery and business continuity planning, and have successfully led teams in mitigating and recovering from various security incidents.
+    <div id="about" class="py-20 bg-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-cyber to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                    <img src="images/bgim1.png" alt="Raju Kumar" class="relative rounded-lg shadow-2xl w-full object-cover border border-gray-800 bg-card" onerror="this.src='https://via.placeholder.com/600x600/1a1a1a/00f3ff?text=RKR'">
+                </div>
+
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6 text-white">About <span class="text-cyber">Me</span></h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        As a highly skilled network systems/security engineer and server administrator, I ensure the security and reliability of complex network infrastructures. I possess a deep understanding of security technologies, virtualization, and disaster recovery.
+                    </p>
+                    
+                    <div class="mb-6 border-b border-gray-700 flex space-x-6">
+                        <button class="tab-btn active-tab pb-2 text-cyber border-b-2 border-cyber font-semibold transition-all" onclick="openTab(event, 'skills')">Skills</button>
+                        <button class="tab-btn pb-2 text-gray-500 hover:text-white transition-all" onclick="openTab(event, 'experience')">Experience</button>
+                        <button class="tab-btn pb-2 text-gray-500 hover:text-white transition-all" onclick="openTab(event, 'education')">Education</button>
+                    </div>
+
+                    <div id="skills" class="tab-content block animate-fade-in-up">
+                        <ul class="space-y-3 text-gray-300">
+                            <li><i class="fa-solid fa-check text-cyber mr-2"></i> <span class="font-bold text-white">Network Design:</span> Secure Industrial Network Designing & Troubleshooting.</li>
+                            <li><i class="fa-solid fa-check text-cyber mr-2"></i> <span class="font-bold text-white">Web Dev:</span> Python (Django/Flask) Development.</li>
+                            <li><i class="fa-solid fa-check text-cyber mr-2"></i> <span class="font-bold text-white">Automation:</span> Scripting & ML with Python.</li>
+                        </ul>
+                    </div>
+
+                    <div id="experience" class="tab-content hidden animate-fade-in-up">
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2018 - Present</span><br>Network Infrastructure Design & Troubleshooting.</li>
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2019 - Present</span><br>System Automation & Scripting.</li>
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2021 - Present</span><br>Full Stack Python Web Development.</li>
+                        </ul>
+                    </div>
+
+                    <div id="education" class="tab-content hidden animate-fade-in-up">
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2018</span><br>CCNA & Cloud v1 Certification.</li>
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2019</span><br>Machine Learning & Deep Learning (IIT Roorkee).</li>
+                            <li class="border-l-2 border-cyber pl-4"><span class="text-cyber text-sm">2021</span><br>Web Programming with Python.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="services" class="py-20 bg-black/50">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-12 text-white">My <span class="text-cyber">Services</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:-translate-y-2 hover:shadow-cyan-500/20 transition-all duration-300 border border-gray-800 group">
+                    <i class="fa-solid fa-code text-4xl text-cyber mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-bold mb-3 text-white">Web Design</h3>
+                    <p class="text-gray-400 text-sm mb-4">Creation of secure, user-friendly websites reflecting brand identity using modern frameworks.</p>
+                    <a href="#" onclick="showMaintenance()" class="text-cyber text-sm hover:underline">Read more</a>
+                </div>
+
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:-translate-y-2 hover:shadow-cyan-500/20 transition-all duration-300 border border-gray-800 group">
+                    <i class="fa-solid fa-network-wired text-4xl text-cyber mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-bold mb-3 text-white">Network Architecture</h3>
+                    <p class="text-gray-400 text-sm mb-4">Logical mapping, device configuration, IP addressing structure, and security architecture implementation.</p>
+                    <a href="#" onclick="showMaintenance()" class="text-cyber text-sm hover:underline">Read more</a>
+                </div>
+
+                <div class="bg-card p-8 rounded-xl shadow-lg hover:-translate-y-2 hover:shadow-cyan-500/20 transition-all duration-300 border border-gray-800 group">
+                    <i class="fa-solid fa-screwdriver-wrench text-4xl text-cyber mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-bold mb-3 text-white">Technical Support</h3>
+                    <p class="text-gray-400 text-sm mb-4">Maintenance of Firewalls (L2-L3), System Administration, and complex hardware troubleshooting.</p>
+                    <a href="#" onclick="showMaintenance()" class="text-cyber text-sm hover:underline">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="portfolio" class="py-20 bg-dark">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-12 text-center text-white">My <span class="text-cyber">Work</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative overflow-hidden rounded-xl group cursor-pointer aspect-video bg-gray-800">
+                    <img src="images/Web_work.jpg" alt="Web Work" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90">
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                            <h3 class="text-xl font-bold text-white">Web Applications</h3>
+                            <p class="text-cyber text-sm mb-3">HTML, React, Django, PostgreSQL</p>
+                            <a href="#" class="inline-block bg-white text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-cyber"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden rounded-xl group cursor-pointer aspect-video bg-gray-800">
+                    <img src="images/fix-network.jpg" alt="Network Work" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90">
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                            <h3 class="text-xl font-bold text-white">Network Configs</h3>
+                            <p class="text-cyber text-sm mb-3">Palo Alto, FortiGate, Checkpoint</p>
+                            <a href="#" class="inline-block bg-white text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-cyber"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden rounded-xl group cursor-pointer aspect-video bg-gray-800">
+                    <img src="images/automation.jpg" alt="Automation Work" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90">
+                        <div class="absolute bottom-0 left-0 p-6 translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                            <h3 class="text-xl font-bold text-white">Automation</h3>
+                            <p class="text-cyber text-sm mb-3">Python Network Libraries</p>
+                            <a href="#" class="inline-block bg-white text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-cyber"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="border border-gray-600 text-gray-300 px-8 py-3 rounded-md hover:border-cyber hover:text-cyber transition-colors">View More</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="py-20 bg-black/50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-4xl font-heading font-bold mb-6 text-white">Contact <span class="text-cyber">Me</span></h2>
+                    <p class="text-gray-400 mb-8"><i class="fa-solid fa-paper-plane text-cyber mr-2"></i> <a href="mailto:mail@rajukumarrkr.in" class="hover:text-white transition-colors">mail@rajukumarrkr.in</a></p>
+                    
+                    <div class="flex space-x-4 mb-8">
+                        <a href="https://www.facebook.com/rajukumar.rathawa.rkr" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/rajukumar_rkr" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white transition-all"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.instagram.com/rajukumar_rkr/" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-pink-600 hover:text-white transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.threads.net/@rajukumar_rkr" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-threads"></i></a>
+                    </div>
+                    
+                    <button onclick="downloadCV()" class="bg-cyber text-dark font-bold px-6 py-3 rounded-md hover:bg-white transition-colors shadow-[0_0_15px_rgba(0,243,255,0.5)]">
+                        Download CV
+                    </button>
+                </div>
+
+                <div>
+                    <form name="submit-to-google-sheet" class="space-y-4">
+                        <input type="text" name="Name" placeholder="Your Name" required 
+                            class="w-full bg-card border border-gray-700 rounded-md p-4 text-white focus:outline-none focus:border-cyber focus:ring-1 focus:ring-cyber transition-all">
+                        <input type="email" name="Email" placeholder="Your Email" required 
+                            class="w-full bg-card border border-gray-700 rounded-md p-4 text-white focus:outline-none focus:border-cyber focus:ring-1 focus:ring-cyber transition-all">
+                        <textarea name="Message" rows="6" placeholder="Your Message" 
+                            class="w-full bg-card border border-gray-700 rounded-md p-4 text-white focus:outline-none focus:border-cyber focus:ring-1 focus:ring-cyber transition-all"></textarea>
                         
-                        My technical acumen is complemented by excellent communication and collaboration skills, allowing me to effectively work with cross-functional teams and stakeholders. I am passionate about staying up-to-date with emerging trends and technologies in the field, and am committed to continuously improving the security posture of the organizations I work with.</p>
-                    <div class="tab-titles">
-                        <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                        <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                        <p class="tab-links" onclick="opentab('education')">Education</p>
-                    </div>
-                    <div class="tab-contents active-tab" id="skills">
-                        <ul>
-                            <li><span>Network Design</span><br>Secure industrial Network Designing & Troubleshooting of complex network infrastructure.</li>
-                            <li><span>Web Development</span><br>Python WebApps Development using Frameworks like Django and Flask.</li>
-                            <li><span>Automation</span><br>Automation and machine learning with Python.</li>
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="experience">
-                        <ul>
-                            <li><span>2018 - Present</span><br>Implementation/Designing & Troubleshooting complex network infrastructures.</li>
-                            <li><span>2019 - Present</span><br>Automation for Network Systems and Troubleshooting.</li>
-                            <li><span>2021 - Present</span><br>Web Application Development using Python.</li>
-                            
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="education">
-                        <ul>
-                            <li><span>2018</span><br>Cisco Certified Network Associate and JCHNE+cloud v1.</li>
-                            <li><span>2019</span><br>Python machine learning & Deep Learning from IIT, Roorkee.</li>
-                            <li><span>2021</span><br>Full stack Web Development and Web Programming using Python.</li>
-                            
-                        </ul>
-                    </div>
+                        <button type="submit" class="w-full bg-gray-800 text-white font-bold py-3 rounded-md hover:bg-cyber hover:text-dark transition-all">Send Message</button>
+                    </form>
+                    <span id="msg" class="block mt-4 text-green-400 font-medium"></span>
                 </div>
             </div>
         </div>
+    </div>
 
+    <footer class="bg-dark py-8 border-t border-gray-800 text-center">
+        <p class="text-gray-500 text-sm">
+            Copyright &copy;2025 All rights reserved. Made with <i class="fa-solid fa-heart text-red-500 mx-1"></i> by Rkr
+        </p>
+    </footer>
 
-        <!------------------servies------------->
-        <div id="services">
-            <div class="container">
-                <h1 class="sub-title">My Services</h1>
-                <div class="services-list">
-                    <div>
-                        <i class="fa-solid fa-code"></i>
-                        <h2>Web Design</h2>
-                        <p>Creation of websites and pages to reflect a company's brand and information and ensure a user-friendly experience. Whether I am designing a website or maintaining content on a web page, appearance and design are included as important elements.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-                    <div>
-                        
-                        <i class="fa-solid fa-network-wired"></i>
-                        <h2>Network Architecture Design</h2>
-                        <p>A logical map of the network to be implemented, the number of network devices, the type of network devices, the location of network devices, the IP addressing structure, and the network security architecture are all typical components of network design and Configurations.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-                    <div>
-                        <!--<i class="fa-brands fa-app-store-ios"></i>-->
-                        <i><img class="technical" src="images/technical-support.png" width="70px" alt="Technical_support"></i>
-                        <h2>Technical Support</h2>
-                        <p>Maintenance and troubleshooting of Computer Network Hardware,specialized in areas such as Information Systems, Network Management (firewalls & L2-3 devices)and System Administration.</p>
-                        <a href="#" onclick="hello()">more.</a>
-                    </div>
-
-
-                </div>
-
-            </div>
-        </div>
-        <!------------------------Portfolio------------------->
-        <div id="portfolio">
-            <div class="container">
-                <h1 class="sub-title">My Work</h1>
-                <div class="work-list">
-                    <div class="work">
-                        <img src="images/Web_work.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Web Applications</h3>
-                            <p>Web Programming using HTML, CSS, JavaScript,React, Postgresql, SQLite3, Flask & Django.</p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                    <div class="work">
-                        <img src="images/fix-network.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Network Device Configurations</h3>
-                            <p>Configurations of Next Generation firewalls like (Paloalto, FortiGate, Sophos and Checkpoint), Routers,Switches,L2-L3 devices and Wireless controllers. </p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                    <div class="work">
-                        <img src="images/automation.jpg" alt="work">
-                        <div class="layer">
-                            <h3>Automation for Computer Network</h3>
-                            <p>Heavy Tasks automation to perform network activity using python libraries.</p>
-                                <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <a href="#" class="btn">See more</a>
-            </div>
-        </div>
-        <!-- ----------------Contact-------------------- -->
-        <div id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="contact-left">
-                        <h1 class="sub-title">Contact Info :</h1>
-                        <p><i class="fa-solid fa-paper-plane"></i><a href="mailto:mail@rajukumarrkr.in" id="mail"> mail@rajukumarrkr.in</a></p>
-                        <!--<p><i class="fa-solid fa-phone-flip"></i> </p>-->
-                        <div class="social-icons">
-                            <a href="https://www.facebook.com/rajukumar.rathawa.rkr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                            <a href="https://twitter.com/rajukumar_rkr" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                            <a href="https://www.instagram.com/rajukumar_rkr/" target="_blank"><i class="fa-brands fa-instagram"></i>
-                            <a href="https://www.threads.net/@rajukumar_rkr" target="_blank"><i class="fa-brands fa-threads"></i></a>
-                        </div>
-                        <!-- <a href="#" download="images" class="btn btn2" onclick="unauth()">Download CV</a> -->
-
-                    </div>
-                    <div class="contact-right">
-                        <form name="submit-to-google-sheet">
-                            <input type="text" name="Name"  placeholder="Enter Your Name" required>
-                            <input type="email" name="Email" placeholder="Email" required>
-                            <textarea name="Message" id="" cols="30" rows="10" placeholder="Enter Your Message"></textarea>
-                            <button type="submit" class="btn btn2">Submit</button>
-                        </form>
-                        <span id="msg"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer class="copyright">
-            <p>Copyright &copy;2025 All rights reserved. Made with <i class="fa-solid fa-heart"></i> by Rkr !</p>
-        </footer>
-        <script>
-
-            var tablinks = document.getElementsByClassName('tab-links');
-            var tabcontents = document.getElementsByClassName('tab-contents');
-
-            function opentab(tabname) {
-                for (tablink of tablinks) {
-                    tablink.classList.remove('active-link');
-                }
-                for (tabcontent of tabcontents) {
-                    tabcontent.classList.remove('active-tab')
-                }
-                event.currentTarget.classList.add("active-link")
-                document.getElementById(tabname).classList.add("active-tab");
-
-            }
-        </script>
-        <script>
-            var sidemenu = document.getElementById("sidemenu");
-
-            function openmenu(){
-                sidemenu.style.right = '0';
-            }
-            function closemenu(){
-                sidemenu.style.right = '-200px';
-            }
-        </script>
-        <script>
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzn3r5y3h2XpK8lCDbQae1oijRBR6KoR9_NOPVBDPQkN2De1h3Dzfcf5PUXFDjgBp0x/exec'
-            const form = document.forms['submit-to-google-sheet']
-            const msg = document.getElementById('msg')
-          
-            form.addEventListener('submit', e => {
-              e.preventDefault()
-              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    msg.innerHTML='Message Sent Successfully !'
-                    setTimeout(function(){
-                        msg.innerHTML=''
-                    },5000)
-                    form.reset()
-                })
-                .catch(error => console.error('Error!', error.message))
-            })
-          </script>
-           <!-- Load library from the CDN -->
-  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-
-  <!-- Setup and start animation! -->
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    
     <script>
-        var profession = {
-            strings: ["I'm a Cyber Security Engineer","A Network Systems Administrator","A Server Administrator", "&amp; Python WebApps Developer !"],
-            typeSpeed: 40,
-            loop:true
+        // 1. Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         }
-        var typed = new Typed('#profession',profession);
-        
-      </script>
-</body>
 
+        // 2. Tab Functionality
+        function openTab(event, tabName) {
+            // Hide all tab contents
+            const contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.add("hidden");
+                contents[i].classList.remove("block");
+            }
+            
+            // Remove active style from all buttons
+            const buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("text-cyber", "border-b-2", "border-cyber", "font-semibold");
+                buttons[i].classList.add("text-gray-500");
+            }
+
+            // Show current tab and style button
+            document.getElementById(tabName).classList.remove("hidden");
+            document.getElementById(tabName).classList.add("block");
+            event.currentTarget.classList.remove("text-gray-500");
+            event.currentTarget.classList.add("text-cyber", "border-b-2", "border-cyber", "font-semibold");
+        }
+
+        // 3. Typed.js
+        var typed = new Typed('#profession', {
+            strings: ["Cyber Security Engineer", "Network Systems Administrator", "Server Administrator", "Python WebApps Developer"],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true
+        });
+
+        // 4. Vanta.js (Background)
+        // Ensure DOM is fully loaded before initializing
+        window.addEventListener('DOMContentLoaded', () => {
+             VANTA.DOTS({
+                el: "#vanta-bg", // Targeting the specific background div
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x00f3ff, // Cyber color
+                color2: 0x0f0f0f,
+                backgroundColor: 0x0f0f0f,
+                size: 3.0,
+                spacing: 35.00
+            })
+        });
+
+        // 5. Modern Alerts (SweetAlert2)
+        function showMaintenance() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Under Maintenance',
+                text: 'We are working to get this back up and running as soon as possible!',
+                background: '#1a1a1a',
+                color: '#fff',
+                confirmButtonColor: '#00f3ff',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Got it</span>'
+            });
+        }
+
+        function downloadCV() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Access Restricted',
+                text: 'Please contact via email to request the full CV.',
+                background: '#1a1a1a',
+                color: '#fff',
+                confirmButtonColor: '#00f3ff',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Close</span>'
+            });
+        }
+
+        // 6. Form Submission (Google Sheets)
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzn3r5y3h2XpK8lCDbQae1oijRBR6KoR9_NOPVBDPQkN2De1h3Dzfcf5PUXFDjgBp0x/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const msg = document.getElementById('msg')
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            const btn = form.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = 'Sending...';
+            btn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    msg.innerHTML = 'Message Sent Successfully!'
+                    setTimeout(function(){ msg.innerHTML = '' }, 5000)
+                    form.reset()
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sent!',
+                        text: 'Thanks for contacting me.',
+                        background: '#1a1a1a',
+                        color: '#fff',
+                        confirmButtonColor: '#00f3ff',
+                        confirmButtonText: '<span style="color:black; font-weight:bold;">OK</span>'
+                    });
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                });
+        })
+    </script>
+</body>
 </html>

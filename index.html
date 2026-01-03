@@ -21,7 +21,8 @@
                         cyber: '#00f3ff', // Cyan accent
                         dark: '#050505',
                         card: '#111111',
-                        terminal: '#0c0c0c'
+                        terminal: '#0c0c0c',
+                        'cyber-dark': '#0a0a0a'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -45,9 +46,7 @@
     </script>
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
 
@@ -101,6 +100,22 @@
         .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
         .marquee-content { display: inline-block; animation: scroll 30s linear infinite; }
         .marquee-content:hover { animation-play-state: paused; }
+
+        /* AI Chatbot Animations */
+        .chat-slide-up { animation: slideUp 0.3s ease-out forwards; }
+        .chat-slide-down { animation: slideDown 0.3s ease-in forwards; }
+        
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideDown { from { transform: translateY(0); opacity: 1; } to { transform: translateY(100%); opacity: 0; } }
+
+        .typing-dot {
+            width: 6px; height: 6px; background: #00f3ff; border-radius: 50%;
+            display: inline-block; animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 
@@ -201,9 +216,6 @@
                 <i class="fab fa-python text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
                 <i class="fas fa-network-wired text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
                 <i class="fab fa-linux text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
-                <i class="fab fa-aws text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
-                <i class="fab fa-docker text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
-                <i class="fas fa-shield-alt text-4xl text-gray-600 hover:text-cyber transition-colors"></i>
             </div>
         </div>
     </div>
@@ -223,7 +235,6 @@
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
                         <img src="images/bgim1.png" alt="Raju Kumar" class="w-full rounded bg-gray-900 object-cover" onerror="this.src='https://via.placeholder.com/600x600/0f0f0f/00f3ff?text=USER+IMAGE+NOT+FOUND'">
-                        
                         <div class="absolute bottom-6 right-6 bg-black/80 backdrop-blur border border-cyber text-cyber px-4 py-2 rounded text-xs font-mono shadow-xl">
                             <i class="fa-solid fa-check-circle mr-2"></i>Security Cleared
                         </div>
@@ -298,9 +309,7 @@
                 <div class="p-4 h-80 overflow-y-auto" id="terminal-output" onclick="document.getElementById('command-input').focus()">
                     <div class="text-gray-400 mb-2">Welcome to RKR System v2.5.0</div>
                     <div class="text-gray-400 mb-4">Copyright (c) 2026 Corporation. All rights reserved.</div>
-                    
                     <div id="history"></div>
-                    
                     <div class="flex items-center">
                         <span class="text-green-500 mr-2">guest@rkr:~$</span>
                         <input type="text" id="command-input" class="bg-transparent border-none outline-none text-white w-full caret-cyber" autocomplete="off" autofocus>
@@ -446,6 +455,37 @@
         </div>
     </div>
 
+    <div id="ai-chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div id="ai-chat-box" class="hidden bg-cyber-dark border border-gray-700 w-80 md:w-96 rounded-lg shadow-2xl overflow-hidden mb-4 transition-all duration-300 transform origin-bottom-right">
+            <div class="bg-gray-900 p-4 border-b border-gray-800 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 bg-cyber rounded-full animate-pulse"></div>
+                    <h3 class="text-white font-mono text-sm font-bold">TERMINATOR <span class="text-xs text-gray-500">v1.0</span></h3>
+                </div>
+                <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-4 bg-black/50 scrollbar-hide">
+                <div class="flex flex-col gap-1">
+                    <div class="bg-gray-800/50 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%]">
+                        Terminator Online. I am RKR's automated assistant. How can I help you navigate this web ?
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-gray-900 border-t border-gray-800 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask about skills, contact..." class="flex-1 bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-cyber font-mono" onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()" class="bg-cyber text-black px-4 rounded hover:bg-white transition-colors font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <button onclick="toggleChat()" class="bg-cyber text-black w-14 h-14 rounded-full shadow-[0_0_20px_rgba(0,243,255,0.4)] flex items-center justify-center hover:scale-110 transition-transform duration-300 group">
+            <i class="fa-solid fa-robot text-xl group-hover:rotate-12 transition-transform"></i>
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+        </button>
+    </div>
+
     <footer class="bg-black py-8 border-t border-gray-800 text-center font-mono text-xs">
         <div class="mb-4">
             <span class="text-gray-600">Visitor Intel: </span>
@@ -454,11 +494,11 @@
             <span id="visitor-time" class="text-gray-400">--:--:--</span>
         </div>
         <p class="text-gray-600">
-            &copy; 2026 RKR. System Secure.
+            &copy; 2026 RKR. All rights reserved.
         </p>
     </footer>
 
-    <button id="to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="fixed bottom-8 right-8 bg-cyber/10 border border-cyber text-cyber w-10 h-10 flex items-center justify-center backdrop-blur translate-y-20 opacity-0 transition-all duration-300 z-40 hover:bg-cyber hover:text-black">
+    <button id="to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="fixed bottom-8 right-24 bg-cyber/10 border border-cyber text-cyber w-10 h-10 flex items-center justify-center backdrop-blur translate-y-20 opacity-0 transition-all duration-300 z-40 hover:bg-cyber hover:text-black">
         <i class="fa-solid fa-chevron-up"></i>
     </button>
 
@@ -469,7 +509,7 @@
         // 0. Initialize AOS
         AOS.init({ once: true, offset: 50 });
 
-        // 1. Terminal Logic (The "Extra" Feature)
+        // 1. Terminal Logic
         const terminalInput = document.getElementById('command-input');
         const terminalHistory = document.getElementById('history');
         const terminalOutput = document.getElementById('terminal-output');
@@ -480,7 +520,6 @@
             'about': 'Navigating to About section...',
             'skills': 'Python, Network Security, Linux, AWS, Docker',
             'contact': 'Opening communication channels...',
-            'sudo': 'Permission denied: You are not root.',
             'clear': 'clear'
         };
 
@@ -512,12 +551,8 @@
         // 2. Visitor Intel (IP & Time)
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
-            .then(data => {
-                document.getElementById('visitor-ip').innerText = data.ip;
-            })
-            .catch(() => {
-                document.getElementById('visitor-ip').innerText = 'Hidden';
-            });
+            .then(data => { document.getElementById('visitor-ip').innerText = data.ip; })
+            .catch(() => { document.getElementById('visitor-ip').innerText = 'Hidden'; });
 
         function updateTime() {
             const now = new Date();
@@ -529,27 +564,17 @@
         // 3. Typed.js
         var typed = new Typed('#profession', {
             strings: ["Cyber Security Engineer", "Network Systems Admin", "Python Developer"],
-            typeSpeed: 40,
-            backSpeed: 20,
-            loop: true
+            typeSpeed: 40, backSpeed: 20, loop: true
         });
 
         // 4. Vanta Background
         window.addEventListener('DOMContentLoaded', () => {
              VANTA.DOTS({
                 el: "#vanta-bg",
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x00f3ff,
-                color2: 0x111111,
-                backgroundColor: 0x050505,
-                size: 2.5,
-                spacing: 40.00
+                mouseControls: true, touchControls: true, gyroControls: false,
+                minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
+                color: 0x00f3ff, color2: 0x111111, backgroundColor: 0x050505,
+                size: 2.5, spacing: 40.00
             })
         });
 
@@ -608,9 +633,7 @@
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Connected',
-                        text: 'Message transmitted securely.',
+                        icon: 'success', title: 'Connected', text: 'Message transmitted securely.',
                         background: '#111', color: '#fff', confirmButtonColor: '#00f3ff'
                     });
                 })
@@ -623,13 +646,109 @@
 
         function downloadCV() {
              Swal.fire({
-                icon: 'error',
-                title: '403 Forbidden',
-                text: 'Direct download is restricted. Please request via email.',
+                icon: 'error', title: '403 Forbidden', text: 'Direct download is restricted. Please request via email.',
                 background: '#111', color: '#fff', confirmButtonColor: '#00f3ff'
             });
+        }
+
+        // ----------------------------------------------------
+        // AI CHATBOT LOGIC
+        // ----------------------------------------------------
+        let isChatOpen = false;
+        
+        // Knowledge Base
+        const aiMemory = {
+            "hello": "Hello! I am RKR's digital assistant. Ask me about his skills, projects, or contact info.",
+            "hi": "Hi there! How can I assist you today?",
+            "who are you": "I am a simulated AI Sentinel, programmed to assist visitors on this portfolio.",
+            "skills": "RKR specializes in: Python, Network Security, AWS Cloud, Docker, Linux, and Full Stack Development.",
+            "contact": "You can reach RKR at mail@rajukumarrkr.in or use the contact form below.",
+            "projects": "Major projects include: Secure Dashboard (Flask), Enterprise Network Architecture (Cisco/Palo Alto), and Auto-Remediation Bots.",
+            "experience": "RKR has over 5 years of experience in Network Engineering and Web Development.",
+            "default": "I'm not sure about that. Try asking about 'skills', 'projects', or 'contact info'."
+        };
+
+        function toggleChat() {
+            const chatBox = document.getElementById('ai-chat-box');
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatBox.classList.remove('hidden');
+                chatBox.classList.add('chat-slide-up');
+                setTimeout(() => document.getElementById('chat-input').focus(), 300);
+            } else {
+                chatBox.classList.remove('chat-slide-up');
+                chatBox.classList.add('hidden');
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const inputField = document.getElementById('chat-input');
+            const message = inputField.value.trim();
+            if (message === "") return;
+
+            // Add User Message
+            addMessageToUI(message, 'user');
+            inputField.value = '';
+
+            // Simulate AI Processing
+            showTyping();
+            
+            setTimeout(() => {
+                removeTyping();
+                const response = getAIResponse(message);
+                addMessageToUI(response, 'bot');
+            }, 1000);
+        }
+
+        function addMessageToUI(text, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            
+            if (sender === 'user') {
+                div.className = "self-end bg-cyber text-black p-3 rounded-lg rounded-tr-none text-sm font-bold max-w-[85%]";
+            } else {
+                div.className = "self-start bg-gray-800/50 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%]";
+            }
+            
+            div.innerText = text;
+            div.style.animation = "fadeIn 0.3s ease";
+            chatMessages.appendChild(div);
+            
+            // Auto scroll
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const chatMessages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.id = "typing-indicator";
+            div.className = "self-start bg-gray-800/50 p-3 rounded-lg rounded-tl-none text-sm border-l-2 border-cyber";
+            div.innerHTML = `<span class="typing-dot"></span> <span class="typing-dot"></span> <span class="typing-dot"></span>`;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function getAIResponse(input) {
+            input = input.toLowerCase();
+            
+            if (input.includes('skill') || input.includes('stack')) return aiMemory.skills;
+            if (input.includes('contact') || input.includes('email') || input.includes('reach')) return aiMemory.contact;
+            if (input.includes('project') || input.includes('work') || input.includes('built')) return aiMemory.projects;
+            if (input.includes('experience') || input.includes('year')) return aiMemory.experience;
+            if (input.includes('who') || input.includes('name')) return aiMemory['who are you'];
+            if (input.includes('hello') || input.includes('hi') || input.includes('hey')) return aiMemory.hi;
+            
+            return aiMemory.default;
         }
     </script>
 </body>
 </html>
-

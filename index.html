@@ -616,10 +616,13 @@
         // 7. Form Handling
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxzb3eDO9seK5Hqs3XTKawRienTozuQZ343zwI8q1kYRQShQ1khlCPr9_dugExzhhTCVQ/exec'
         const form = document.forms['submit-to-google-sheet']
-        const msg = document.getElementById('msg')
+        const msg = document.getElementById('form-msg')
         
         form.addEventListener('submit', e => {
             e.preventDefault()
+            // 1. Play Sound (if audio is enabled in your code)
+            if(typeof playClick === "function") playClick();
+            
             const btn = form.querySelector('button');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> TRANSMITTING...';

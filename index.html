@@ -125,6 +125,7 @@
 </head>
 
 <body class="bg-dark text-gray-200 font-sans antialiased overflow-x-hidden">
+    <canvas id="threat-map" class="fixed inset-0 z-0 opacity-20 pointer-events-none"></canvas>
 
     <div class="fixed top-0 left-0 h-1 bg-cyber z-[60] transition-all duration-100" id="scroll-progress" style="width: 0%"></div>
 
@@ -514,44 +515,327 @@
         // 0. Initialize AOS
         AOS.init({ once: true, offset: 50 });
 
-        // 1. Terminal Logic
-        const terminalInput = document.getElementById('command-input');
-        const terminalHistory = document.getElementById('history');
-        const terminalOutput = document.getElementById('terminal-output');
+// ----------------------------------------------------
+// 1. TERMINAL LOGIC (GOD-MODE + BLACK OPS UPGRADE)
+// ----------------------------------------------------
+const terminalInput = document.getElementById('command-input');
+const terminalHistory = document.getElementById('history'); 
+const terminalOutput = document.getElementById('terminal-output');
 
-        const commands = {
-            'help': 'Available commands: about, skills, services, contact, clear, whoami',
-            'whoami': 'guest@rkr-portfolio (Access Level: Visitor)',
-            'about': 'Navigating to About section...',
-            'skills': 'Python, Network Security, Linux, AWS, Docker',
-            'contact': 'Opening communication channels...',
-            'clear': 'clear'
-        };
+// State Variables for History Navigation
+let cmdHistory = []; 
+let historyIndex = -1;
 
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const input = this.value.toLowerCase().trim();
-                let output = `<div class="mb-1"><span class="text-green-500">guest@rkr:~$</span> ${this.value}</div>`;
+// 📂 MOCK FILE SYSTEM
+const fileSystem = {
+    'resume.txt': 'Secure Link: <a href="#" onclick="downloadCV()" class="underline text-cyber">rkr_cv_2025.pdf</a>',
+    'contact.vcf': 'Email: mail@rajukumarrkr.in\nPhone: +91-XXXXXXXXXX\nStatus: Open to Work',
+    'secrets.dat': 'ACCESS DENIED. ENCRYPTED LAYER 4.',
+    'projects.md': '1. Auto-Bot (Python)\n2. Secure-Grid (AWS)\n3. Cyber-Shield (Firewall)'
+};
+
+// 📜 STATIC COMMANDS
+const staticCommands = {
+    'whoami': 'guest@rkr-portfolio (Access Level: Visitor)',
+    'skills': 'Python, Network Security, Linux, AWS, Docker, React, Django',
+    'services': 'Network Auditing, Cloud Architecture, Penetration Testing',
+    'clear': 'clear',
+    'about': 'Navigating to About section...',
+    'contact': 'Opening communication channels...'
+};
+
+terminalInput.addEventListener('keydown', async function(e) {
+    // --- 1. HISTORY NAVIGATION (Up/Down Arrows) ---
+    if (e.key === 'ArrowUp') {
+        if (historyIndex > 0) {
+            historyIndex--;
+            this.value = cmdHistory[historyIndex];
+        }
+        e.preventDefault();
+    }
+    if (e.key === 'ArrowDown') {
+        if (historyIndex < cmdHistory.length - 1) {
+            historyIndex++;
+            this.value = cmdHistory[historyIndex];
+        } else {
+            historyIndex = cmdHistory.length;
+            this.value = '';
+        }
+        e.preventDefault();
+    }
+
+    // --- 2. COMMAND EXECUTION ---
+    if (e.key === 'Enter') {
+        const fullInput = this.value.trim();
+        const args = fullInput.split(' '); 
+        const cmd = args[0].toLowerCase(); 
+        const arg1 = args[1]; 
+
+        if (fullInput === "") return;
+
+        // Save to History
+        cmdHistory.push(fullInput);
+        historyIndex = cmdHistory.length;
+
+        // Print User Command
+        printOutput(`guest@rkr:~$ ${fullInput}`, "text-green-500");
+        this.value = '';
+
+        // --- COMMAND PROCESSING ---
+        switch(cmd) {
+            // --- BASIC UTILS ---
+            case 'help':
+                printOutput(`
+                [SYSTEM COMMANDS]
+                > about, contact, skills   : Navigation
+                > ls, cat [file]           : File System
+                > clear, history           : Utils
+                > matrix, color [hex]      : UI Customization
                 
-                if (commands[input]) {
-                    if (input === 'clear') {
-                        terminalHistory.innerHTML = '';
-                        this.value = '';
-                        return;
-                    }
-                    if (input === 'about') document.querySelector('#about').scrollIntoView({behavior: 'smooth'});
-                    if (input === 'contact') document.querySelector('#contact').scrollIntoView({behavior: 'smooth'});
-                    
-                    output += `<div class="text-cyber mb-4">${commands[input]}</div>`;
-                } else if (input !== '') {
-                    output += `<div class="text-red-500 mb-4">Command not found: ${input}. Type 'help' for list.</div>`;
-                }
+                [NETWORK & TOOLS]
+                > ping [url], scan [ip]    : Diagnostics
+                > speedtest                : Bandwidth Sim
+                > myip                     : Show your Public IP
+                > weather [city]           : Real-time Weather
+                > github [user]            : GitHub Stats
+                
+                [CRYPTOGRAPHY]
+                > encrypt [text]           : Encode Base64
+                > decrypt [text]           : Decode Base64
+                `, "text-cyber");
+                break;
 
-                terminalHistory.innerHTML += output;
-                this.value = '';
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
-            }
-        });
+            case 'clear':
+                terminalHistory.innerHTML = '';
+                break;
+
+            case 'history':
+                cmdHistory.forEach((c, i) => printOutput(`${i + 1}  ${c}`, "text-gray-400"));
+                break;
+
+            case 'date':
+                printOutput(new Date().toString(), "text-gray-400");
+                break;
+
+            case 'echo':
+                printOutput(args.slice(1).join(' '));
+                break;
+
+            case 'color':
+                if(arg1) {
+                    terminalHistory.style.color = arg1;
+                    printOutput(`System Text Color set to ${arg1}`, "text-success");
+                } else printOutput("Usage: color [hex] (e.g. color #ff0000)", "text-alert");
+                break;
+
+            case 'matrix':
+                document.body.classList.toggle('matrix-mode');
+                // Simple inline style toggle for immediate effect
+                if(terminalHistory.style.textShadow) {
+                    terminalHistory.style.textShadow = '';
+                    terminalHistory.style.color = '';
+                    printOutput("MATRIX MODE: DISENGAGED", "text-gray-400");
+                } else {
+                    terminalHistory.style.textShadow = '0 0 5px #00ff00';
+                    terminalHistory.style.color = '#00ff00';
+                    printOutput("MATRIX MODE: ENGAGED", "text-green-500 font-bold");
+                }
+                break;
+
+            // --- CRYPTO TOOLS ---
+            case 'encrypt':
+                if (!args.slice(1).join(' ')) { printOutput("Usage: encrypt [message]", "text-red-500"); return; }
+                const encoded = btoa(args.slice(1).join(' '));
+                printOutput(`OUTPUT: ${encoded}`, "text-yellow-400 break-all");
+                break;
+
+            case 'decrypt':
+                try {
+                    if (!arg1) { printOutput("Usage: decrypt [string]", "text-red-500"); return; }
+                    const decoded = atob(arg1);
+                    printOutput(`OUTPUT: ${decoded}`, "text-green-400");
+                } catch(e) { printOutput("Error: Invalid Base64 string", "text-red-500"); }
+                break;
+
+            // --- FILE SYSTEM ---
+            case 'ls':
+                printOutput(Object.keys(fileSystem).join('    '), "text-blue-400 font-bold");
+                break;
+
+            case 'cat':
+                if(fileSystem[arg1]) printOutput(fileSystem[arg1], "text-gray-300");
+                else printOutput(arg1 ? `cat: ${arg1}: No such file` : "Usage: cat [filename]", "text-red-500");
+                break;
+
+            // --- REAL APIS ---
+            case 'ping':
+                if (!arg1) { printOutput("Usage: ping [domain]", "text-red-500"); return; }
+                await runRealPing(arg1);
+                break;
+
+            case 'scan':
+            case 'whois':
+                if (!arg1) { printOutput("Usage: scan [ip]", "text-red-500"); return; }
+                await runRealIPScan(arg1);
+                break;
+            
+            case 'myip':
+                await getMyIP();
+                break;
+
+            case 'weather':
+                if (!arg1) { printOutput("Usage: weather [city]", "text-red-500"); return; }
+                await getRealWeather(arg1);
+                break;
+
+            case 'github':
+                if (!arg1) { printOutput("Usage: github [username]", "text-red-500"); return; }
+                await getGithubStats(arg1);
+                break;
+            
+            case 'speedtest':
+                await runSpeedTest();
+                break;
+
+            // --- EASTER EGGS ---
+            case 'sudo':
+                printOutput("guest is not in the sudoers file. This incident will be reported.", "text-red-500 font-bold bg-red-900/20 p-1");
+                break;
+            case 'rm':
+                if (arg1 === '-rf' && args[2] === '/') {
+                    printOutput("CRITICAL: DELETING SYSTEM32...", "text-red-500 animate-pulse");
+                    setTimeout(() => printOutput("Just kidding. Don't do that.", "text-green-500"), 2000);
+                } else printOutput("Permission Denied.", "text-red-500");
+                break;
+            case 'joke':
+                const jokes = ["Why do Java developers wear glasses? Because they don't C#.", "I'd tell you a UDP joke, but you might not get it."];
+                printOutput(jokes[Math.floor(Math.random() * jokes.length)], "text-yellow-400 italic");
+                break;
+
+            // --- DEFAULT / STATIC ---
+            default:
+                if (staticCommands[cmd]) {
+                    if (cmd === 'about') document.querySelector('#about').scrollIntoView({behavior: 'smooth'});
+                    if (cmd === 'contact') document.querySelector('#contact').scrollIntoView({behavior: 'smooth'});
+                    printOutput(staticCommands[cmd], "text-cyber");
+                } else {
+                    printOutput(`bash: ${cmd}: command not found`, "text-red-500");
+                }
+        }
+        
+        // Auto Scroll
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+});
+
+// --- HELPER FUNCTIONS ---
+
+function printOutput(text, colorClass = "text-gray-300") {
+    const formattedText = text.replace(/\n/g, '<br>');
+    terminalHistory.innerHTML += `<div class="mb-1 ${colorClass}">${formattedText}</div>`;
+}
+
+// 1. HTTP PING + DNS RESOLVER
+async function runRealPing(domain) {
+    printOutput(`Pinging ${domain}...`, 'text-gray-400');
+    
+    // Resolve IP (Google DNS)
+    let resolvedIP = "Unknown";
+    try {
+        const dnsRes = await fetch(`https://dns.google/resolve?name=${domain}`);
+        const dnsData = await dnsRes.json();
+        if (dnsData.Answer) {
+            const record = dnsData.Answer.find(r => r.type === 1);
+            if (record) resolvedIP = record.data;
+        }
+    } catch (e) {}
+
+    // Latency Check
+    let url = domain.startsWith('http') ? domain : `https://${domain}`;
+    try {
+        printOutput(`Contacting ${domain} [${resolvedIP}]...`, 'text-cyber');
+        const start = performance.now();
+        await fetch(url, { mode: 'no-cors', cache: 'no-cache' });
+        const end = performance.now();
+        const latency = (end - start).toFixed(2);
+        printOutput(`Reply from ${resolvedIP}: bytes=32 time=${latency}ms protocol=https`, 'text-green-500');
+    } catch (error) {
+        printOutput(`Request Timed Out. Target ${domain} unreachable.`, 'text-red-500');
+    }
+}
+
+// 2. IP SCANNER
+async function runRealIPScan(ip) {
+    printOutput(`Scanning ${ip}...`, 'text-gray-400');
+    try {
+        const res = await fetch(`http://ip-api.com/json/${ip}`);
+        const data = await res.json();
+        if(data.status === 'fail') throw new Error(data.message);
+        
+        printOutput(`--------------------------------`, 'text-cyber');
+        printOutput(`ISP: ${data.isp}`, 'text-green-500');
+        printOutput(`ORG: ${data.org}`);
+        printOutput(`COUNTRY: ${data.country} (${data.countryCode})`);
+        printOutput(`CITY: ${data.city}, ${data.regionName}`);
+        printOutput(`LAT/LON: ${data.lat}, ${data.lon}`);
+        printOutput(`--------------------------`, 'text-cyber');
+    } catch (e) { printOutput(`Scan Failed: ${e.message}`, 'text-red-500'); }
+}
+
+// 3. WEATHER
+async function getRealWeather(city) {
+    printOutput(`Accessing meteorological satellites for ${city}...`, 'text-gray-400');
+    try {
+        const res = await fetch(`https://wttr.in/${city}?format=%C+%t&m`);
+        const text = await res.text();
+        printOutput(`[WEATHER REPORT]: ${text}`, 'text-blue-300 font-bold');
+    } catch (e) { printOutput("Weather Satellites Offline.", "text-red-500"); }
+}
+
+// 4. GITHUB
+async function getGithubStats(user) {
+    printOutput(`Fetching GitHub Profile: ${user}...`, 'text-gray-400');
+    try {
+        const res = await fetch(`https://api.github.com/users/${user}`);
+        if(!res.ok) throw new Error("User not found");
+        const data = await res.json();
+        printOutput(`--------------------------`, 'text-cyber');
+        printOutput(`USER: ${data.login}`, 'text-green-500');
+        printOutput(`REPOS: ${data.public_repos} | FOLLOWERS: ${data.followers}`);
+        printOutput(`URL: ${data.html_url}`);
+        printOutput(`--------------------------`, 'text-cyber');
+    } catch (e) { printOutput(`GitHub Error: ${e.message}`, 'text-red-500'); }
+}
+
+// 5. SPEEDTEST SIMULATOR
+async function runSpeedTest() {
+    printOutput("Initializing Speedtest v4.0...", "text-cyber");
+    await new Promise(r => setTimeout(r, 500));
+    printOutput("Selecting best server... [Mumbai-AWS]", "text-gray-400");
+    
+    // Fake progress animation
+    let bar = "░░░░░░░░░░";
+    for(let i=1; i<=10; i++) {
+        await new Promise(r => setTimeout(r, 100)); 
+        // In a real console we would clear line, here we wait for result
+    }
+    
+    const down = (Math.random() * 50 + 100).toFixed(2);
+    const up = (Math.random() * 30 + 50).toFixed(2);
+    
+    printOutput(`DOWNLOAD: [██████████] ${down} Mbps`, "text-green-400");
+    printOutput(`UPLOAD:   [██████████] ${up} Mbps`, "text-blue-400");
+    printOutput("Latency: 12ms | Jitter: 2ms", "text-gray-500");
+}
+
+// 6. GET MY IP
+async function getMyIP() {
+    try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        printOutput(`YOUR PUBLIC IP: ${data.ip}`, "text-yellow-400 font-bold");
+    } catch(e) { printOutput("Could not resolve public IP.", "text-red-500"); }
+}
 
         // 2. Visitor Intel (IP & Time)
         fetch('https://api.ipify.org?format=json')
@@ -897,9 +1181,96 @@
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
+    // ----------------------------------------------------
+    // OPTION B: LIVE THREAT MAP VISUALIZER
+    // ----------------------------------------------------
+    const canvas = document.getElementById('threat-map');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let threats = [];
+
+    // Resize Canvas
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Threat Object
+    class Threat {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            // Random Start & End Points
+            this.x1 = Math.random() * width;
+            this.y1 = Math.random() * height;
+            this.x2 = Math.random() * width;
+            this.y2 = Math.random() * height;
+            
+            this.progress = 0;
+            this.speed = Math.random() * 0.01 + 0.005;
+            this.color = Math.random() > 0.9 ? '#ff003c' : '#00f3ff'; // 10% Red (Alert), 90% Blue
+            this.size = Math.random() * 2 + 1;
+        }
+
+        update() {
+            this.progress += this.speed;
+            if (this.progress >= 1) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            // Calculate current position along the line
+            const curX = this.x1 + (this.x2 - this.x1) * this.progress;
+            const curY = this.y1 + (this.y2 - this.y1) * this.progress;
+
+            // Draw Head
+            ctx.beginPath();
+            ctx.arc(curX, curY, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+
+            // Draw Trail (Fade out)
+            ctx.beginPath();
+            ctx.moveTo(this.x1, this.y1);
+            ctx.lineTo(curX, curY);
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 0.5;
+            ctx.globalAlpha = 1 - this.progress; // Fade out as it moves
+            ctx.stroke();
+            ctx.globalAlpha = 1.0; // Reset alpha
+        }
+    }
+
+    // Initialize Threats
+    for (let i = 0; i < 15; i++) {
+        threats.push(new Threat());
+    }
+
+    // Animation Loop
+    function animateMap() {
+        ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; // Trail effect background
+        ctx.fillRect(0, 0, width, height);
+
+        threats.forEach(t => {
+            t.update();
+            t.draw();
+        });
+
+        requestAnimationFrame(animateMap);
+    }
+    animateMap();
     </script>
 </body>
 </html>
+
 
 
 

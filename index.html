@@ -764,22 +764,26 @@ async function runRealPing(domain) {
     }
 }
 
-// 2. IP SCANNER
+// 2. IP SCANNER (HTTPS Fixed)
 async function runRealIPScan(ip) {
     printOutput(`Scanning ${ip}...`, 'text-gray-400');
     try {
-        const res = await fetch(`http://ip-api.com/json/${ip}`);
+        // FIX: Switched to 'ipapi.co' which supports HTTPS (Secure)
+        const res = await fetch(`https://ipapi.co/${ip}/json/`);
         const data = await res.json();
-        if(data.status === 'fail') throw new Error(data.message);
+        
+        if(data.error) throw new Error(data.reason);
         
         printOutput(`--------------------------------`, 'text-cyber');
-        printOutput(`ISP: ${data.isp}`, 'text-green-500');
-        printOutput(`ORG: ${data.org}`);
-        printOutput(`COUNTRY: ${data.country} (${data.countryCode})`);
-        printOutput(`CITY: ${data.city}, ${data.regionName}`);
-        printOutput(`LAT/LON: ${data.lat}, ${data.lon}`);
+        printOutput(`ISP: ${data.org}`, 'text-green-500'); // Note: 'org' is often used for ISP here
+        printOutput(`ASN: ${data.asn}`);
+        printOutput(`COUNTRY: ${data.country_name} (${data.country_code})`);
+        printOutput(`CITY: ${data.city}, ${data.region}`);
+        printOutput(`LAT/LON: ${data.latitude}, ${data.longitude}`);
         printOutput(`--------------------------`, 'text-cyber');
-    } catch (e) { printOutput(`Scan Failed: ${e.message}`, 'text-red-500'); }
+    } catch (e) { 
+        printOutput(`Scan Failed: ${e.message}. (Try disabling AdBlock)`, 'text-red-500'); 
+    }
 }
 
 // 3. WEATHER
@@ -1270,6 +1274,7 @@ async function getMyIP() {
     </script>
 </body>
 </html>
+
 
 
 

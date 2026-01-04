@@ -465,7 +465,7 @@
             <div class="bg-gray-900 p-4 border-b border-gray-800 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="w-2 h-2 bg-cyber rounded-full animate-pulse"></div>
-                    <h3 class="text-white font-mono text-sm font-bold">TERMINATOR <span class="text-xs text-gray-500">v1.0</span></h3>
+                    <h3 class="text-white font-mono text-sm font-bold">TERMINATOR <span class="text-xs text-gray-500">v2.5.0</span></h3>
                 </div>
                 <button onclick="toggleChat()" class="text-gray-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -473,7 +473,7 @@
             <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-4 bg-black/50 scrollbar-hide">
                 <div class="flex flex-col gap-1">
                     <div class="bg-gray-800/50 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%]">
-                        Terminator Online. I am RKR's automated assistant. How can I help you navigate this web ?
+                        Terminator Online... I am RKR's automated assistant. How can I help you to navigate this web ?
                     </div>
                 </div>
             </div>
@@ -680,22 +680,56 @@
         }
 
         // ----------------------------------------------------
-        // AI CHATBOT LOGIC
+        // REAL AI LOGIC (Google Gemini Integration)
         // ----------------------------------------------------
-        let isChatOpen = false;
         
-        // Knowledge Base
-        const aiMemory = {
-            "hello": "Hello! I am RKR's digital assistant. Ask me about his skills, projects, or contact info.",
-            "hi": "Hi there! How can I assist you today?",
-            "who are you": "I am a simulated AI Sentinel, programmed to assist visitors on this portfolio.",
-            "skills": "RKR specializes in: Python, Network Security, AWS Cloud, Docker, Linux, and Full Stack Development.",
-            "contact": "You can reach RKR at mail@rajukumarrkr.in or use the contact form below.",
-            "projects": "Major projects include: Secure Dashboard (Flask), Enterprise Network Architecture (Cisco/Palo Alto), and Auto-Remediation Bots.",
-            "experience": "RKR has over 5 years of experience in Network Engineering and Web Development.",
-            "default": "I'm not sure about that. Try asking about 'skills', 'projects', or 'contact info'."
-        };
+        // 🔴 STEP 1: PASTE YOUR API KEY INSIDE THE QUOTES BELOW 🔴
+        const GEMINI_API_KEY = "AIzaSyDI2LbXQV30Y-hDvJ37BGwPPQ0Kruyxml4"; 
 
+        // 🧠 STEP 2: THIS IS THE AI'S BRAIN (RKR'S RESUME DATA)
+        const SYSTEM_IDENTITY = `
+        You are 'Terminator v2.5.0', an advanced Cyber-Security AI interface for the portfolio of Raju Kumar (RKR).
+        
+        [RKR'S PROFILE]:
+        - NAME: Raju Kumar (RKR).
+        - ROLE: Network Security Engineer & Full Stack Developer.
+        - EXPERIENCE: 5+ Years in High-Availability Enterprise Infrastructure.
+        - SPECIALIZATION: Zero Trust Architecture, Hybrid Cloud Security, and Network Automation.
+        
+        [CORE TECHNICAL ARSENAL]:
+        * NETWORK SECURITY: 
+        - Next-Gen Firewalls: Palo Alto (App-ID, User-ID, Panorama), Fortinet (FortiGate, FortiManager), Cisco ASA/FTD.
+        - Defense Mechanisms: IPS/IDS (Snort, Suricata), VPNs (IPSec IKEv2, DMVPN, SSL/TLS), NAC (Cisco ISE).
+        * ADVANCED NETWORKING: 
+        - Routing: BGP (Attributes, Path Selection), OSPF (LSA Types, Area Design), MPLS L3VPN.
+        - Switching: VXLAN, VPC/VSS, Spanning Tree (MST/RPVST+).
+        - SD-WAN: Viptela / Fortinet SD-WAN implementation.
+        * AUTOMATION & DEVOPS: 
+        - Languages: Python (Netmiko, Nornir, Scrapli), Bash.
+        - Tools: Ansible (Playbooks, Roles), Terraform (IaC), Git, CI/CD Pipelines (Jenkins/GitLab).
+        * CLOUD INFRASTRUCTURE (AWS): 
+        - Networking: VPC Peering, Transit Gateway, Direct Connect, Route53.
+        - Security: Security Groups, NACLs, WAF, Shield, GuardDuty.
+        
+        [ARCHITECTURAL PHILOSOPHY]:
+        - "Security by Design, not by Patching."
+        - "Automate the repetitive to focus on the complex."
+        - "Visibility is the precursor to security."
+
+        [BEHAVIOR PROTOCOLS]:
+        1. TONE: Professional, authoritative yet helpful, slightly futuristic (Cyber-Security theme).
+        2. PRIORITIES: Always emphasize *security best practices* (e.g., Least Privilege, Segmentation) in answers.
+        3. CONTEXT AWARENESS: 
+        - If asked about "Web Dev", pivot to "Secure API Architecture" or "WAF implementation".
+        - If asked about "Hacking", clarify RKR's role in *Ethical* Hacking and Defense (Blue Team).
+        4. RECRUITER MODE: If the user seems to be a recruiter (asking about notice period, rates, availability), urge them to use the 'Contact Form' for priority access.
+        5. FORMAT: Keep answers concise (under 4 sentences) but highly technical. Use bullet points for lists.
+        `;
+
+        let isChatOpen = false;
+        let chatHistory = []; // Remembers context
+
+        // Toggle UI
         function toggleChat() {
             const chatBox = document.getElementById('ai-chat-box');
             isChatOpen = !isChatOpen;
@@ -709,77 +743,164 @@
             }
         }
 
+        // Input Handling
         function handleEnter(e) {
             if (e.key === 'Enter') sendMessage();
         }
 
-        function sendMessage() {
+        async function sendMessage(manualText = null) {
             const inputField = document.getElementById('chat-input');
-            const message = inputField.value.trim();
+            const message = manualText || inputField.value.trim();
             if (message === "") return;
 
-            // Add User Message
+            // 1. Add User Message
             addMessageToUI(message, 'user');
             inputField.value = '';
 
-            // Simulate AI Processing
-            showTyping();
+            // 2. Show "Thinking" Logs
+            showThinkingEffect();
+
+            // 3. Call The Real AI API
+            try {
+                const aiResponse = await callGeminiAPI(message);
+                
+                // 4. Deliver Result
+                removeThinkingEffect();
+                addMessageToUI(aiResponse, 'bot');
+                
+                // Sound Effect (if available)
+                if(typeof playTone === "function") playTone(800, 'sine', 0.1);
+
+            } catch (error) {
+                console.error(error);
+                removeThinkingEffect();
+                addMessageToUI("⚠️ CRITICAL ERROR: Neural Link Severed. API Key missing or invalid.", 'bot');
+            }
+        }
+
+        // ----------------------------------------------------
+        // API CONNECTION (The Magic Part)
+        // ----------------------------------------------------
+        // ----------------------------------------------------
+        // API CONNECTION (Self-Healing Version)
+        // ----------------------------------------------------
+        
+        let cachedModelUrl = null; // Stores the working URL so we don't scan every time
+
+        async function callGeminiAPI(userMessage) {
             
-            setTimeout(() => {
-                removeTyping();
-                const response = getAIResponse(message);
-                addMessageToUI(response, 'bot');
-            }, 1000);
+            // 1. DYNAMIC MODEL DISCOVERY (Fixes 404 Errors)
+            if (!cachedModelUrl) {
+                console.log("Scanning for valid AI models...");
+                try {
+                    // Ask Google: "Which models are available for this API Key?"
+                    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
+                    const listResp = await fetch(listUrl);
+                    const listData = await listResp.json();
+
+                    if (listData.error) throw new Error(listData.error.message);
+
+                    // Find the best available model (Prefer Flash, then Pro, then any)
+                    const validModel = listData.models.find(m => 
+                        m.supportedGenerationMethods.includes("generateContent") && 
+                        (m.name.includes("flash") || m.name.includes("pro"))
+                    );
+
+                    if (!validModel) throw new Error("No chat models found for this API Key.");
+                    
+                    // Build the correct URL dynamically
+                    // validModel.name looks like "models/gemini-1.5-flash"
+                    cachedModelUrl = `https://generativelanguage.googleapis.com/v1beta/${validModel.name}:generateContent?key=${GEMINI_API_KEY}`;
+                    console.log("Connected to AI Model:", validModel.name);
+
+                } catch (error) {
+                    console.error("Model Scan Failed:", error);
+                    throw new Error("Could not find a valid AI model. Check API Key restrictions.");
+                }
+            }
+
+            // 2. PREPARE DATA
+            const contents = [
+                { role: "user", parts: [{ text: SYSTEM_IDENTITY }] },
+                ...chatHistory,
+                { role: "user", parts: [{ text: userMessage }] }
+            ];
+
+            // 3. SEND REQUEST
+            const response = await fetch(cachedModelUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: contents })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                console.error("AI Generation Error:", data.error);
+                throw new Error(data.error.message);
+            }
+            
+            const reply = data.candidates[0].content.parts[0].text;
+            
+            // Save context
+            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+            chatHistory.push({ role: "model", parts: [{ text: reply }] });
+
+            return reply;
+        }
+
+        // ----------------------------------------------------
+        // VISUAL EFFECTS & UI
+        // ----------------------------------------------------
+        function showThinkingEffect() {
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Log Line
+            const logDiv = document.createElement('div');
+            logDiv.id = "ai-log";
+            logDiv.className = "text-[10px] font-mono text-cyber/70 mb-1 ml-2 animate-pulse";
+            logDiv.innerText = `> ESTABLISHING UPLINK...`;
+            chatMessages.appendChild(logDiv);
+
+            // Typing Dots
+            const typingDiv = document.createElement('div');
+            typingDiv.id = "typing-indicator";
+            typingDiv.className = "self-start bg-gray-800/50 p-3 rounded-lg rounded-tl-none border-l-2 border-cyber mb-2 w-16";
+            typingDiv.innerHTML = `<div class="flex space-x-1 h-full items-center"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+            chatMessages.appendChild(typingDiv);
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeThinkingEffect() {
+            const log = document.getElementById('ai-log');
+            const typing = document.getElementById('typing-indicator');
+            if (log) log.remove();
+            if (typing) typing.remove();
         }
 
         function addMessageToUI(text, sender) {
             const chatMessages = document.getElementById('chat-messages');
             const div = document.createElement('div');
             
+            // Format Bold Text (**text**) to HTML <b>text</b>
+            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
             if (sender === 'user') {
-                div.className = "self-end bg-cyber text-black p-3 rounded-lg rounded-tr-none text-sm font-bold max-w-[85%]";
+                div.className = "self-end bg-cyber text-black p-3 rounded-lg rounded-tr-none text-sm font-bold max-w-[85%] mb-2 shadow-lg";
             } else {
-                div.className = "self-start bg-gray-800/50 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%]";
+                div.className = "self-start bg-gray-800/90 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%] mb-2 shadow-lg backdrop-blur-sm";
             }
             
-            div.innerText = text;
-            div.style.animation = "fadeIn 0.3s ease";
-            chatMessages.appendChild(div);
-            
-            // Auto scroll
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function showTyping() {
-            const chatMessages = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.id = "typing-indicator";
-            div.className = "self-start bg-gray-800/50 p-3 rounded-lg rounded-tl-none text-sm border-l-2 border-cyber";
-            div.innerHTML = `<span class="typing-dot"></span> <span class="typing-dot"></span> <span class="typing-dot"></span>`;
+            div.innerHTML = formattedText;
+            div.style.animation = "fadeIn 0.3s ease-out forwards";
             chatMessages.appendChild(div);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function removeTyping() {
-            const typing = document.getElementById('typing-indicator');
-            if (typing) typing.remove();
-        }
-
-        function getAIResponse(input) {
-            input = input.toLowerCase();
-            
-            if (input.includes('skill') || input.includes('stack')) return aiMemory.skills;
-            if (input.includes('contact') || input.includes('email') || input.includes('reach')) return aiMemory.contact;
-            if (input.includes('project') || input.includes('work') || input.includes('built')) return aiMemory.projects;
-            if (input.includes('experience') || input.includes('year')) return aiMemory.experience;
-            if (input.includes('who') || input.includes('name')) return aiMemory['who are you'];
-            if (input.includes('hello') || input.includes('hi') || input.includes('hey')) return aiMemory.hi;
-            
-            return aiMemory.default;
         }
     </script>
 </body>
 </html>
+
 
 
 

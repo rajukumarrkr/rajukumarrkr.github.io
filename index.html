@@ -968,105 +968,6 @@ async function getMyIP() {
         }
 
         // ----------------------------------------------------
-        // REAL AI LOGIC (Google Gemini Integration)
-        // ----------------------------------------------------
-        
-        // 🔴 STEP 1: PASTE YOUR API KEY INSIDE THE QUOTES BELOW 🔴
-        const GEMINI_API_KEY = "AIzaSyAsugIMT2C5XZcqTbZmc5LxcCD9cgHqj_k"; 
-
-        // 🧠 STEP 2: THIS IS THE AI'S BRAIN (RKR'S RESUME DATA)
-        const SYSTEM_IDENTITY = `
-        You are 'Terminator v2.5.0', an advanced Cyber-Security AI interface for the portfolio of Raju Kumar (RKR).
-        
-        [RKR'S PROFILE]:
-        - NAME: Raju Kumar (RKR).
-        - ROLE: Network Security Engineer & Full Stack Developer.
-        - EXPERIENCE: 5+ Years in High-Availability Enterprise Infrastructure.
-        - SPECIALIZATION: Zero Trust Architecture, Hybrid Cloud Security, and Network Automation.
-        
-        [CORE TECHNICAL ARSENAL]:
-        * NETWORK SECURITY: 
-        - Next-Gen Firewalls: Palo Alto (App-ID, User-ID, Panorama), Fortinet (FortiGate, FortiManager), Cisco ASA/FTD.
-        - Defense Mechanisms: IPS/IDS (Snort, Suricata), VPNs (IPSec IKEv2, DMVPN, SSL/TLS), NAC (Cisco ISE).
-        * ADVANCED NETWORKING: 
-        - Routing: BGP (Attributes, Path Selection), OSPF (LSA Types, Area Design), MPLS L3VPN.
-        - Switching: VXLAN, VPC/VSS, Spanning Tree (MST/RPVST+).
-        - SD-WAN: Viptela / Fortinet SD-WAN implementation.
-        * AUTOMATION & DEVOPS: 
-        - Languages: Python (Netmiko, Nornir, Scrapli), Bash.
-        - Tools: Ansible (Playbooks, Roles), Terraform (IaC), Git, CI/CD Pipelines (Jenkins/GitLab).
-        * CLOUD INFRASTRUCTURE (AWS): 
-        - Networking: VPC Peering, Transit Gateway, Direct Connect, Route53.
-        - Security: Security Groups, NACLs, WAF, Shield, GuardDuty.
-        
-        [ARCHITECTURAL PHILOSOPHY]:
-        - "Security by Design, not by Patching."
-        - "Automate the repetitive to focus on the complex."
-        - "Visibility is the precursor to security."
-
-        [BEHAVIOR PROTOCOLS]:
-        1. TONE: Professional, authoritative yet helpful, slightly futuristic (Cyber-Security theme).
-        2. PRIORITIES: Always emphasize *security best practices* (e.g., Least Privilege, Segmentation) in answers.
-        3. CONTEXT AWARENESS: 
-        - If asked about "Web Dev", pivot to "Secure API Architecture" or "WAF implementation".
-        - If asked about "Hacking", clarify RKR's role in *Ethical* Hacking and Defense (Blue Team).
-        4. RECRUITER MODE: If the user seems to be a recruiter (asking about notice period, rates, availability), urge them to use the 'Contact Form' for priority access.
-        5. FORMAT: Keep answers concise (under 4 sentences) but highly technical. Use bullet points for lists.
-        `;
-
-        let isChatOpen = false;
-        let chatHistory = []; // Remembers context
-
-        // Toggle UI
-        function toggleChat() {
-            const chatBox = document.getElementById('ai-chat-box');
-            isChatOpen = !isChatOpen;
-            if (isChatOpen) {
-                chatBox.classList.remove('hidden');
-                chatBox.classList.add('chat-slide-up');
-                setTimeout(() => document.getElementById('chat-input').focus(), 300);
-            } else {
-                chatBox.classList.remove('chat-slide-up');
-                chatBox.classList.add('hidden');
-            }
-        }
-
-        // Input Handling
-        function handleEnter(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
-
-        async function sendMessage(manualText = null) {
-            const inputField = document.getElementById('chat-input');
-            const message = manualText || inputField.value.trim();
-            if (message === "") return;
-
-            // 1. Add User Message
-            addMessageToUI(message, 'user');
-            inputField.value = '';
-
-            // 2. Show "Thinking" Logs
-            showThinkingEffect();
-
-            // 3. Call The Real AI API
-            try {
-                const aiResponse = await callGeminiAPI(message);
-                
-                // 4. Deliver Result
-                removeThinkingEffect();
-                addMessageToUI(aiResponse, 'bot');
-                
-                // Sound Effect (if available)
-                if(typeof playTone === "function") playTone(800, 'sine', 0.1);
-
-            } catch (error) {
-                console.error(error);
-                removeThinkingEffect();
-                addMessageToUI("⚠️ CRITICAL ERROR: Neural Link Severed. API Key missing or invalid.", 'bot');
-            }
-        }
-
-/ ----------------------------------------------------
         // SENTINEL AI LOGIC V6.0 (SINGULARITY EDITION)
         // ----------------------------------------------------
         
@@ -1413,6 +1314,7 @@ async function getMyIP() {
     </script>
 </body>
 </html>
+
 
 
 

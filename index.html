@@ -1066,97 +1066,255 @@ async function getMyIP() {
             }
         }
 
-        // ----------------------------------------------------
-        // API CONNECTION (The Magic Part)
-        // ----------------------------------------------------
-        // ----------------------------------------------------
-        // API CONNECTION (Self-Healing Version)
+/ ----------------------------------------------------
+        // SENTINEL AI LOGIC V6.0 (SINGULARITY EDITION)
         // ----------------------------------------------------
         
-        let cachedModelUrl = null; // Stores the working URL so we don't scan every time
+        let isChatOpen = false;
+        let userName = "Guest";
+        let lastTopic = ""; 
+        let currentDeepDive = ""; 
 
-        async function callGeminiAPI(userMessage) {
+        // 🧠 KNOWLEDGE GRAPH (With Smart Actions)
+        const knowledgeBase = [
+            {
+                // GREETINGS
+                id: "greeting",
+                triggers: [/hi\b/, /hello/, /hey/, /greetings/, /start/, /system status/],
+                priority: 1,
+                response: () => {
+                    const h = new Date().getHours();
+                    const t = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+                    return `${t}, ${userName}. Terminator v2.5.0 Online...<br>Accessing RKR's <strong>Security Architecture</strong> database.`;
+                },
+                actions: ["Who are you?", "Core Skills", "View Projects"]
+            },
+            {
+                // IDENTITY
+                id: "identity",
+                triggers: [/who are you/, /your name/, /bot/, /ai/, /what is this/],
+                priority: 2,
+                response: "I am Terminator, a simulated Neural Interface designed to demonstrate RKR's engineering capabilities in <strong>Frontend Logic</strong> and <strong>System Architecture</strong>.",
+                elaboration: "I run entirely in your browser using advanced Pattern Matching algorithms. No server-side API keys are required, ensuring 100% privacy and uptime.",
+                actions: ["Show Skills", "Contact RKR"]
+            },
+            {
+                // NETWORK SECURITY (High Priority)
+                id: "security",
+                triggers: [/firewall/, /palo alto/, /fortinet/, /cisco/, /security/, /vpn/, /zero trust/, /panorama/],
+                priority: 3,
+                response: "<strong>[SECURITY ARSENAL]:</strong><br>RKR is an expert in Next-Gen Firewalls (NGFW):<br>• <strong>Palo Alto:</strong> App-ID, User-ID, Panorama, GlobalProtect.<br>• <strong>Architecture:</strong> Zero Trust segmentation & Micro-segmentation strategies.",
+                elaboration: "RKR manages security policies as code (IaC). He has migrated legacy port-based rules to application-aware policies (App-ID), reducing the attack surface by over 40% in previous roles.",
+                actions: ["Tell me more", "Automation Skills", "Cloud Security"]
+            },
+            {
+                // CLOUD & AWS
+                id: "cloud",
+                triggers: [/aws/, /cloud/, /vpc/, /transit gateway/, /direct connect/, /azure/],
+                priority: 3,
+                response: "<strong>[CLOUD ARCHITECTURE]:</strong><br>RKR bridges On-Premise networks with AWS using:<br>• <strong>Connectivity:</strong> Direct Connect (DX) & Site-to-Site VPNs.<br>• <strong>Routing:</strong> Transit Gateway (TGW) for Hub-and-Spoke topology.",
+                elaboration: "He implements 'Security at the Edge' using AWS WAF and Network Firewalls inside a dedicated Security VPC, inspecting all East-West and North-South traffic.",
+                actions: ["Tell me more", "View Projects", "Contact"]
+            },
+            {
+                // AUTOMATION (Python)
+                id: "automation",
+                triggers: [/python/, /automation/, /script/, /ansible/, /nornir/, /netmiko/, /api/],
+                priority: 3,
+                response: "<strong>[DEVOPS & AUTOMATION]:</strong><br>• <strong>Tools:</strong> Python (Nornir/Netmiko), Ansible, Terraform.<br>• <strong>Use Case:</strong> Automated backups, Config drift detection, and Self-Healing networks.",
+                elaboration: "One flagship project is the 'Auto-Remediation Bot'. It listens to Splunk webhooks for threat alerts and uses the Palo Alto API to automatically block malicious IPs in under 5 seconds.",
+                actions: ["Tell me more", "GitHub Profile", "Skills"]
+            },
+            {
+                // PROJECTS
+                id: "projects",
+                triggers: [/project/, /work/, /portfolio/, /build/, /case study/],
+                priority: 2,
+                response: "<strong>[DEPLOYMENT LOGS]:</strong><br>1. <strong>Secure Grid:</strong> AWS Transit Gateway Architecture.<br>2. <strong>Auto-Bot:</strong> Automated Threat Response (Python).<br>3. <strong>SD-WAN Migration:</strong> 50+ Site Viptela rollout.",
+                elaboration: "The SD-WAN migration involved moving from expensive MPLS circuits to hybrid broadband/LTE, implementing Application Aware Routing to guarantee QoS for VoIP and Video traffic.",
+                actions: ["Tell me more", "Security Skills", "Contact"]
+            },
+            {
+                // CONTACT
+                id: "contact",
+                triggers: [/contact/, /email/, /hire/, /job/, /reach/, /call/],
+                priority: 2,
+                response: "<strong>[COMMUNICATION CHANNELS]:</strong><br>• <strong>Email:</strong> <a href='mailto:mail@rajukumarrkr.in' class='text-green-400 underline'>mail@rajukumarrkr.in</a><br>• <strong>Status:</strong> Open to Work / Consulting.",
+                elaboration: "RKR is available for roles focused on Network Architecture, Security Engineering, and Infrastructure Automation. Response time is typically under 24 hours.",
+                actions: ["Download Resume", "LinkedIn"]
+            },
+            {
+                // DOWNLOAD RESUME
+                id: "resume",
+                triggers: [/resume/, /cv/, /download/, /pdf/],
+                priority: 3,
+                response: "Request acknowledged. Retrieving encrypted document...",
+                elaboration: "You can download the official CV using the link below.",
+                actions: ["Click to Download"] // You would handle this action specifically
+            }
+        ];
+
+        const fallbacks = [
+            "Query obscure. Try keywords like <strong>'Firewalls'</strong>, <strong>'Python'</strong>, or <strong>'AWS'</strong>.",
+            "I am optimized for Network Security queries. Ask me about <strong>Projects</strong> or <strong>Skills</strong>.",
+            "Input not recognized. Type <strong>'Help'</strong> for a list of commands."
+        ];
+
+        // ----------------------------------------------------
+        // CORE ENGINE
+        // ----------------------------------------------------
+
+        function toggleChat() {
+            const chatBox = document.getElementById('ai-chat-box');
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatBox.classList.remove('hidden');
+                chatBox.classList.add('chat-slide-up');
+                setTimeout(() => document.getElementById('chat-input').focus(), 300);
+            } else {
+                chatBox.classList.remove('chat-slide-up');
+                chatBox.classList.add('hidden');
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage(manualText = null) {
+            const inputField = document.getElementById('chat-input');
+            const message = manualText || inputField.value.trim();
+            if (message === "") return;
+
+            // Clear old chips
+            removeQuickActions();
+
+            // 1. Add User Message
+            addMessageToUI(message, 'user');
+            inputField.value = '';
+
+            // 2. Thinking Visuals
+            showThinkingEffect();
+
+            // 3. Process (Simulated Latency)
+            const delay = Math.floor(Math.random() * 700) + 500;
             
-            // 1. DYNAMIC MODEL DISCOVERY (Fixes 404 Errors)
-            if (!cachedModelUrl) {
-                console.log("Scanning for valid AI models...");
-                try {
-                    // Ask Google: "Which models are available for this API Key?"
-                    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
-                    const listResp = await fetch(listUrl);
-                    const listData = await listResp.json();
+            setTimeout(() => {
+                const result = processInput(message);
+                removeThinkingEffect();
+                addMessageToUI(result.text, 'bot');
+                
+                // 4. Render Smart Actions
+                if (result.actions && result.actions.length > 0) {
+                    renderQuickActions(result.actions);
+                }
+                
+                // Audio Feedback
+                if(typeof playTone === "function") playTone(800, 'sine', 0.1);
+            }, delay);
+        }
 
-                    if (listData.error) throw new Error(listData.error.message);
+        // INTELLIGENCE PROCESSOR
+        function processInput(input) {
+            const lowerInput = input.toLowerCase();
 
-                    // Find the best available model (Prefer Flash, then Pro, then any)
-                    const validModel = listData.models.find(m => 
-                        m.supportedGenerationMethods.includes("generateContent") && 
-                        (m.name.includes("flash") || m.name.includes("pro"))
-                    );
+            // 1. "Tell Me More" Logic
+            if (lastTopic && currentDeepDive && (lowerInput.includes("more") || lowerInput.includes("detail") || lowerInput.includes("explain"))) {
+                const info = currentDeepDive;
+                currentDeepDive = ""; // Clear to prevent loops
+                return { text: `<strong>[DEEP DIVE]:</strong><br>${info}`, actions: ["Projects", "Contact"] };
+            }
 
-                    if (!validModel) throw new Error("No chat models found for this API Key.");
-                    
-                    // Build the correct URL dynamically
-                    // validModel.name looks like "models/gemini-1.5-flash"
-                    cachedModelUrl = `https://generativelanguage.googleapis.com/v1beta/${validModel.name}:generateContent?key=${GEMINI_API_KEY}`;
-                    console.log("Connected to AI Model:", validModel.name);
-
-                } catch (error) {
-                    console.error("Model Scan Failed:", error);
-                    throw new Error("Could not find a valid AI model. Check API Key restrictions.");
+            // 2. Find Best Match
+            let bestMatch = null;
+            
+            for (const category of knowledgeBase) {
+                if (category.triggers.some(t => t.test(lowerInput))) {
+                    // If we found a match, check if it's higher priority than previous matches (optional complexity)
+                    bestMatch = category;
+                    break; // Return first valid match for now
                 }
             }
 
-            // 2. PREPARE DATA
-            const contents = [
-                { role: "user", parts: [{ text: SYSTEM_IDENTITY }] },
-                ...chatHistory,
-                { role: "user", parts: [{ text: userMessage }] }
-            ];
-
-            // 3. SEND REQUEST
-            const response = await fetch(cachedModelUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: contents })
-            });
-
-            const data = await response.json();
-            
-            if (data.error) {
-                console.error("AI Generation Error:", data.error);
-                throw new Error(data.error.message);
+            // 3. Handle Match
+            if (bestMatch) {
+                lastTopic = bestMatch.id;
+                currentDeepDive = bestMatch.elaboration || "";
+                
+                let outputText = typeof bestMatch.response === 'function' ? bestMatch.response() : bestMatch.response;
+                return { text: outputText, actions: bestMatch.actions };
             }
-            
-            const reply = data.candidates[0].content.parts[0].text;
-            
-            // Save context
-            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-            chatHistory.push({ role: "model", parts: [{ text: reply }] });
 
-            return reply;
+            // 4. Name Handling
+            if (lowerInput.includes("my name is")) {
+                const parts = input.split(" ");
+                userName = parts[parts.length - 1];
+                return { text: `Identity Verified. Welcome, ${userName}.`, actions: ["Skills", "Projects"] };
+            }
+
+            // 5. Fallback
+            return { text: fallbacks[Math.floor(Math.random() * fallbacks.length)], actions: ["Help", "Skills"] };
         }
 
         // ----------------------------------------------------
-        // VISUAL EFFECTS & UI
+        // UI COMPONENTS
         // ----------------------------------------------------
+
+        function addMessageToUI(text, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            
+            if (sender === 'user') {
+                div.className = "self-end bg-cyber text-black p-3 rounded-lg rounded-tr-none text-sm font-bold max-w-[85%] mb-2 shadow-lg transform transition-all hover:scale-[1.02]";
+            } else {
+                div.className = "self-start bg-gray-800/90 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%] mb-2 shadow-lg backdrop-blur-sm";
+            }
+            
+            div.innerHTML = text; 
+            div.style.animation = "fadeIn 0.3s ease-out forwards";
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // --- NEW: QUICK ACTION CHIPS ---
+        function renderQuickActions(actions) {
+            const chatMessages = document.getElementById('chat-messages');
+            const chipsContainer = document.createElement('div');
+            chipsContainer.id = "quick-actions";
+            chipsContainer.className = "flex flex-wrap gap-2 mb-4 ml-2 animate-pulse";
+            
+            actions.forEach(actionText => {
+                const btn = document.createElement('button');
+                btn.className = "px-3 py-1 bg-cyber/10 border border-cyber/40 text-cyber text-[11px] font-mono rounded hover:bg-cyber hover:text-black transition-all cursor-pointer";
+                btn.innerText = `> ${actionText}`;
+                btn.onclick = () => sendMessage(actionText);
+                chipsContainer.appendChild(btn);
+            });
+            
+            chatMessages.appendChild(chipsContainer);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeQuickActions() {
+            const existing = document.getElementById('quick-actions');
+            if (existing) existing.remove();
+        }
+
+        // --- VISUALS ---
         function showThinkingEffect() {
             const chatMessages = document.getElementById('chat-messages');
             
-            // Log Line
             const logDiv = document.createElement('div');
             logDiv.id = "ai-log";
             logDiv.className = "text-[10px] font-mono text-cyber/70 mb-1 ml-2 animate-pulse";
-            logDiv.innerText = `> ESTABLISHING UPLINK...`;
+            logDiv.innerText = `> ACCESSING NEURAL DB...`;
             chatMessages.appendChild(logDiv);
 
-            // Typing Dots
             const typingDiv = document.createElement('div');
             typingDiv.id = "typing-indicator";
             typingDiv.className = "self-start bg-gray-800/50 p-3 rounded-lg rounded-tl-none border-l-2 border-cyber mb-2 w-16";
             typingDiv.innerHTML = `<div class="flex space-x-1 h-full items-center"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
             chatMessages.appendChild(typingDiv);
-            
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
@@ -1165,25 +1323,6 @@ async function getMyIP() {
             const typing = document.getElementById('typing-indicator');
             if (log) log.remove();
             if (typing) typing.remove();
-        }
-
-        function addMessageToUI(text, sender) {
-            const chatMessages = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            
-            // Format Bold Text (**text**) to HTML <b>text</b>
-            const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-            if (sender === 'user') {
-                div.className = "self-end bg-cyber text-black p-3 rounded-lg rounded-tr-none text-sm font-bold max-w-[85%] mb-2 shadow-lg";
-            } else {
-                div.className = "self-start bg-gray-800/90 text-gray-300 p-3 rounded-lg rounded-tl-none text-sm font-mono border-l-2 border-cyber max-w-[90%] mb-2 shadow-lg backdrop-blur-sm";
-            }
-            
-            div.innerHTML = formattedText;
-            div.style.animation = "fadeIn 0.3s ease-out forwards";
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     // ----------------------------------------------------
     // OPTION B: LIVE THREAT MAP VISUALIZER
@@ -1274,6 +1413,7 @@ async function getMyIP() {
     </script>
 </body>
 </html>
+
 
 
 
